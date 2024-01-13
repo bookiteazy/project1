@@ -1,19 +1,41 @@
 
- Train name     :chemmozhi
- Train number   :18204
- Departure time :7.15am
- Arrival time   :2.30pm
- Departure place:coimbatore
- Arrival place  :mayiladuthurai
- Ticket fare    :200rs
- Time duration  :6hr45min
+ Train name     :q
+ Train number   :1
+ Departure time :q
+ Arrival time   :q
+ Departure place:q
+ Arrival place  :q
+ Ticket fare    :1
+ Time duration  :q
+Available tickets  :44
 _______________________________________________________________________________________
- Train name     :shadabti
- Train number   :12083
- Departure time :9.00pm
- Arrival time   :12.00am
- Departure place:thanjavur
- Arrival place  :coimbatore
- Ticket fare    :300rs
- Time duration  :7hr30min
+ Train name     :w
+ Train number   :2
+ Departure time :w
+ Arrival time   :w
+ Departure place:w
+ Arrival place  :w
+ Ticket fare    :5
+ Time duration  :w
+Available tickets  :100
+_______________________________________________________________________________________
+ Train name     :q
+ Train number   :1
+ Departure time :q
+ Arrival time   :q
+ Departure place:q
+ Arrival place  :q
+ Ticket fare    :1
+ Time duration  :q
+Available tickets  :44
+_______________________________________________________________________________________
+ Train name     :w
+ Train number   :2
+ Departure time :w
+ Arrival time   :w
+ Departure place:w
+ Arrival place  :w
+ Ticket fare    :5
+ Time duration  :w
+Available tickets  :90
 _______________________________________________________________________________________
