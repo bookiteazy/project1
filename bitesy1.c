@@ -1,9 +1,6 @@
 #include <stdio.h>
-<<<<<<< HEAD
-//#include <conio.h>
-=======
 #include <conio.h>
->>>>>>> 19f70c70f6d83531ebcf82bdc4e92be35e62a7c5
+#include <conio.h>
 #include <string.h>
 #include <stdlib.h>
 
