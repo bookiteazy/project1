@@ -1,0 +1,28 @@
+
+ Bus name       :krishna
+ Bus number     :3423
+ Departure time :7pm
+ Arrival time   :2am
+ Departure place:coimbatore
+ Arrival place  :thanjavur
+ Ticket fare    :300rs
+ Time duration  :6hrs
+_______________________________________________________________________________________
+ Bus name       :India
+ Bus number     :9812
+ Departure time :8pm
+ Arrival time   :7am
+ Departure place:kanyakumari
+ Arrival place  :chennai
+ Ticket fare    :1200
+ Time duration  :14hrs
+_______________________________________________________________________________________
+ Bus name       :ARS
+ Bus number     :4982
+ Departure time :4am
+ Arrival time   :12pm
+ Departure place:coimbatore
+ Arrival place  :chennai
+ Ticket fare    :800rs
+ Time duration  :9hours
+_______________________________________________________________________________________
