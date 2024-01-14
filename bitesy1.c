@@ -403,7 +403,6 @@ int train_tik_book()                                                            
             if(st_retval==1){
                 goto tloop;
             }
-            getch();
             goto tloop;
             break;
         case 2:
@@ -424,7 +423,7 @@ int train_tik_book()                                                            
 int search_train() {
     FILE *fp, *temp;
     struct travel train;
-    int found = 0, c, m,tickets_to_book,t_fare,i_amt;
+    int found = 0, c, m,tickets_to_book,t_fare,i_amt,num=0;
     char itr_dep[20], itr_arr[20];
 
     fp = fopen("train_book.txt", "r");
@@ -459,9 +458,16 @@ int search_train() {
                train.depart_place, train.arrive_place, &train.tp_fare, train.tp_tm_dur, &train.tp_av_tic);
         fscanf(fp, "\n_______________________________________________________________________________________");
 
+        if(found==1){
+            strcpy(itr_arr,"dummy");
+        }
+        num++;
+
         if (strcmp(train.depart_place, itr_dep) == 0 && strcmp(train.arrive_place, itr_arr) == 0) {
             found = 1;
+            system("cls");
             printf("\n\t\t\t**=======Train Details =======**\n");
+            printf("\n\n\t\t\tTrain ID        : %d", num);
             printf("\n\n\t\t\tTrain name      : %s Express", train.tp_name);
             printf("\n\t\t\tTrain number      : %d", train.tp_no);
             printf("\n\t\t\tDeparture time    : %s", train.depart_time);
@@ -494,8 +500,11 @@ int search_train() {
                     getch();
 
                     system("cls");
-                    printf("\n\t\t\t**=======Payment=======**\n");
-                    printf("\n\n\t\t\tEnter the amount  :");
+                    printf("\n\t\t\t\t**=======Payment=======**\n");
+                    printf("\n________________________________");
+                    printf("\n| Total ticket price      : %d\t|",t_fare);
+                    printf("\n|_______________________________|");
+                    printf("\n\n\t\t\t\tEnter the amount  :");
                     scanf("%d", &i_amt);
 
                     if (i_amt == t_fare) {
@@ -511,7 +520,7 @@ int search_train() {
                         printf("\n\t\t| Arrival Time    :  %s", train.arrive_time);
                         printf("\n\t\t| Total price     :  %d", t_fare);
                         printf("\n\t\t________________________________________________________");
-                        printf("\n\t\t Happy Journey.........");
+                        printf("\n\n\t\t Happy Journey.........");
 
                         fprintf(temp, "\n Train name     :%s\n Train number   :%d\n Departure time :%s\n Arrival time   :%s",
                                 train.tp_name, train.tp_no, train.depart_time, train.arrive_time);
@@ -533,6 +542,13 @@ int search_train() {
                 }
             } else if (c == 2) {
                 rewind(fp);
+            }else{
+                found=0;
+                fprintf(temp, "\n Train name     :%s\n Train number   :%d\n Departure time :%s\n Arrival time   :%s",
+                       train.tp_name, train.tp_no, train.depart_time, train.arrive_time);
+                fprintf(temp, "\n Departure place:%s\n Arrival place  :%s\n Ticket fare    :%d\n Time duration  :%s\nAvailable tickets  :%d",
+                       train.depart_place, train.arrive_place, train.tp_fare, train.tp_tm_dur, train.tp_av_tic);
+                fprintf(temp, "\n_______________________________________________________________________________________");
             }
         }else{
         fprintf(temp, "\n Train name     :%s\n Train number   :%d\n Departure time :%s\n Arrival time   :%s",
@@ -545,6 +561,7 @@ int search_train() {
     }
 
     if (found == 0) {
+        num=0;
         printf("\n\n\t\t_________________________________________________");
         printf("\n\t\t\tNo Trains Found From %s To %s ", itr_dep, itr_arr);
         printf("\n\t\t\t1. Search another");
@@ -581,6 +598,7 @@ int view_trains()
 {
     FILE *fp;
     struct travel train;
+    int num=0;
 
     fp = fopen("train_book.txt", "r");
 
@@ -599,7 +617,8 @@ int view_trains()
         fscanf(fp,"\n Departure place:%s\n Arrival place  :%s\n Ticket fare    :%d\n Time duration  :%s\nAvailable tickets  :%d",train.depart_place,train.arrive_place,&train.tp_fare,train.tp_tm_dur,&train.tp_av_tic);
         fscanf(fp,"\n_______________________________________________________________________________________");
 
-        printf("\n\t\t\tTrain name        : %s Express", train.tp_name);
+        num++;
+        printf("\n\t\t\tTrain ID          : %d", num);
         printf("\n\t\t\tTrain number      : %d", train.tp_no);
         printf("\n\t\t\tDeparture time    : %s", train.depart_time);
         printf("\n\t\t\tArrival time      : %s", train.arrive_time);
@@ -662,7 +681,7 @@ int bus_tik_book()                                                              
 int search_bus() {
     FILE *fp, *temp;
     struct travel bus;
-    int found = 0, c, m, tickets_to_book,t_fare, i_amt;
+    int found = 0, c, m, tickets_to_book,t_fare, i_amt,num=0;
     char itr_dep[20], itr_arr[20];
 
     fp = fopen("bus_book.txt", "r");
@@ -697,10 +716,17 @@ int search_bus() {
                bus.depart_place, bus.arrive_place, &bus.tp_fare, bus.tp_tm_dur, &bus.tp_av_tic);
         fscanf(fp, "\n_______________________________________________________________________________________");
 
+        if(found==1){
+            strcpy(itr_arr,"dummy");
+        }
+
+        num++;
         if (strcmp(bus.depart_place, itr_dep) == 0 && strcmp(bus.arrive_place, itr_arr) == 0) {
             found = 1;
+            system("cls");
             printf("\n\t\t\t**=======Bus Details =======**\n");
-            printf("\n\n\t\t\tbus name        : %s Express", bus.tp_name);
+            printf("\n\n\t\t\tBus ID           :%d", num);
+            printf("\n\n\t\t\tBus name         : %s Express", bus.tp_name);
             printf("\n\t\t\tbus number        : TN-%d", bus.tp_no);
             printf("\n\t\t\tDeparture time    : %s", bus.depart_time);
             printf("\n\t\t\tArrival time      : %s", bus.arrive_time);
@@ -732,8 +758,11 @@ int search_bus() {
                     getch();
 
                     system("cls");
-                    printf("\n\t\t\t**=======Payment=======**\n");
-                    printf("\n\n\t\t\tEnter the amount  :");
+                    printf("\n\t\t\t\t**=======Payment=======**\n");
+                    printf("\n________________________________");
+                    printf("\n| Total ticket price      : %d\t|",t_fare);
+                    printf("\n|_______________________________|");
+                    printf("\n\n\t\t\t\tEnter the amount  :");
                     scanf("%d", &i_amt);
 
                     if (i_amt==t_fare) {
@@ -770,6 +799,13 @@ int search_bus() {
                 }
             } else if (c == 2) {
                 rewind(fp);
+            }else{
+                found=0;
+                fprintf(temp, "\n Bus name     :%s\n Bus number   :%d\n Departure time :%s\n Arrival time   :%s",
+                        bus.tp_name, bus.tp_no, bus.depart_time, bus.arrive_time);
+                fprintf(temp, "\n Departure place:%s\n Arrival place  :%s\n Ticket fare    :%d\n Time duration  :%s\nAvailable tickets  :%d",
+                        bus.depart_place, bus.arrive_place, bus.tp_fare, bus.tp_tm_dur, bus.tp_av_tic);
+                fprintf(temp, "\n_______________________________________________________________________________________");
             }
         }else{
         fprintf(temp, "\n Bus name     :%s\n Bus number   :%d\n Departure time :%s\n Arrival time   :%s",
@@ -782,6 +818,7 @@ int search_bus() {
     }
 
     if (found == 0) {
+        num=0;
         printf("\n\n\t\t_________________________________________________");
         printf("\n\t\t\tNo buses Found From %s To %s ", itr_dep, itr_arr);
         printf("\n\t\t\t1. Search another");
@@ -1481,9 +1518,8 @@ int admin_sports_event()
     return 0;
 }
 
-/*int add_isl()
+int add_isl()
 {
-    printf("hi");
-    getch();
+
     return 1;
-}*/
+}
