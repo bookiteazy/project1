@@ -1,0 +1,8 @@
+
+ Match  cfc vs mumbai
+ Venue        : nehru
+ Date         : 12/02/24
+ Time         : 8pm
+ Ticket fare  : 400
+ Available Tickets  : 23
+_________________________________

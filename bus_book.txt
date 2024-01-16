@@ -7,7 +7,7 @@
  Arrival place  :q
  Ticket fare    :54
  Time duration  :q
-Available tickets  :300
+Available tickets  :287
 _______________________________________________________________________________________
  Bus name     :w
  Bus number   :2
@@ -17,7 +17,7 @@ ________________________________________________________________________________
  Arrival place  :w
  Ticket fare    :90
  Time duration  :w
-Available tickets  :300
+Available tickets  :296
 _______________________________________________________________________________________
  Bus name     :q
  Bus number   :1
