@@ -1,61 +1,31 @@
 
  Train name     :w
- Train number   :2
+ Train number   :1
  Departure time :w
  Arrival time   :w
  Departure place:w
  Arrival place  :w
- Ticket fare    :5
+ Ticket fare    :2
  Time duration  :w
-Available tickets  :0
+Available tickets  :47
 _______________________________________________________________________________________
  Train name     :q
- Train number   :1
- Departure time :q
- Arrival time   :q
+ Train number   :2
+ Departure time :w
+ Arrival time   :w
  Departure place:q
  Arrival place  :q
- Ticket fare    :1
- Time duration  :q
-Available tickets  :24
+ Ticket fare    :3
+ Time duration  :w
+Available tickets  :4
 _______________________________________________________________________________________
  Train name     :w
- Train number   :2
- Departure time :w
- Arrival time   :w
- Departure place:w
- Arrival place  :w
- Ticket fare    :5
- Time duration  :w
-Available tickets  :10
-_______________________________________________________________________________________
- Train name     :q
  Train number   :1
- Departure time :q
- Arrival time   :q
- Departure place:q
- Arrival place  :q
- Ticket fare    :1
- Time duration  :q
-Available tickets  :24
-_______________________________________________________________________________________
- Train name     :w
- Train number   :2
  Departure time :w
  Arrival time   :w
  Departure place:w
  Arrival place  :w
- Ticket fare    :5
+ Ticket fare    :200
  Time duration  :w
-Available tickets  :78
-_______________________________________________________________________________________
- Train name     :w
- Train number   :2
- Departure time :w
- Arrival time   :w
- Departure place:w
- Arrival place  :w
- Ticket fare    :5
- Time duration  :w
-Available tickets  :81
+Available tickets  :184
 _______________________________________________________________________________________

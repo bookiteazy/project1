@@ -7,16 +7,18 @@
 int login_details();
 int user_details();
 int my_profile(),user_balance();
-int train_tik_book();
-int search_train(),view_trains();
+int train_tik_book(),view_trains();
 int bus_tik_book();
 int search_bus(),view_bus();
+int tamil_movie_book();
+int view_tamil_movie();
 int Events_sports_book();
 int search_isl(),view_isl();
 int admin();
 int admin_train(),delete_train();
 int admin_bus(),delete_bus();
 int admin_sports_event(),admin_isl();
+int admin_tamil_movie();
 char u_name[20],u_pwd[20];
 int retval;
 
@@ -25,6 +27,11 @@ struct travel
     char tp_name[20],depart_time[10],arrive_time[10],depart_place[20],arrive_place[20];
     char tp_tm_dur[15];
     int tp_no,tp_av_tic,tp_fare;
+};
+struct movie
+{
+    char mov_name[20],mov_time[10],mov_date[10],mov_theater[20];
+    int mov_t_fare,mov_av_tic;
 };
 struct sports
 {
@@ -39,7 +46,7 @@ int main()
 
     loop:
         system("cls");
-        printf("\n\n\n\n\t\t\t**=======Bookiteazy=======**\n");
+        printf("\n\n\n\n\t\t\t**=========Bookiteazy========**\n");
         printf("\n\n\t\t\t\t1 .LOGIN");
         printf("\n\t\t\t\t2. Create account");
         printf("\n\t\t\t\t3. Admin login");
@@ -118,7 +125,7 @@ int main()
                         }
                         break;
                     case 3:
-                        goto loop;
+                        goto hloop;
                         break;
                     default:
                         printf("\n\t\t\tPlease Enter a valid input...");
@@ -126,6 +133,7 @@ int main()
                         goto tloop;
                 }
             case 2:
+                mloop:
                 system("cls");
                 printf("\n\t\t\t**=======Movies=======**\n");                                                  //Movie page
                 printf("\n\t\t\t1. Tamil Movies");
@@ -135,6 +143,18 @@ int main()
                 printf("\n\t\t\t___________________________");
                 printf("\n\t\t\tEnter the choice :");
                 scanf("%d", &n);
+
+                if(n==4){
+                    goto hloop;
+                }
+                switch(n){
+                    case 1:
+                        retval=tamil_movie_book();
+                        if(retval==1){
+                            goto mloop;
+                        }
+                        break;
+                }
                 break;
             case 3:
                 system("cls");
@@ -146,6 +166,9 @@ int main()
                 printf("\n\t\t\t___________________________");
                 printf("\n\t\t\tEnter the choice :");
                 scanf("%d", &n);
+                if(n==4){
+                    goto hloop;
+                }
                 break;
             case 4:
                 eloop:
@@ -159,6 +182,9 @@ int main()
                 printf("\n\t\t\tEnter the choice :");
                 scanf("%d",&n);
 
+                if(n==4){
+                    goto hloop;
+                }
                 switch(n){
                     case 2:
                         system("cls");
@@ -167,9 +193,10 @@ int main()
                             goto eloop;
                         }
                         break;
-                    case 4:
-                        goto hloop;
-                        break;
+                    default:
+                        printf("\n\t\t\tPleasse Enter a valid input....");
+                        getch();
+                        goto eloop;
                 }
                 break;
             case 5:
@@ -566,7 +593,13 @@ int user_balance()
 
 int train_tik_book()                                                                                          //Train tickect booking interface
 {
-    int m;
+    FILE *fp, *temp, *ub, *utemp;
+    struct travel train;
+    int found = 0, c, n,m,tickets_to_book,t_fare,i_amt,num=0,u_balance;
+    char itr_dep[20], itr_arr[20];
+    char username[20],password[20];
+
+
     tloop:
     system("cls");
     printf("\n\t\t\t**=======Train ticket bookings=======**\n");
@@ -575,19 +608,216 @@ int train_tik_book()                                                            
     printf("\n\t\t\t3.Back");
     printf("\n\t\t\t___________________________");
     printf("\n\t\t\tEnter the choice :");
-    scanf("%d",&m);
+    scanf("%d",&n);
 
-    if(m==3){
+    if(n==3){
         return 1;
     }
-    switch(m){
+    switch(n){
         case 1:
+            loop1:
             system("cls");
-            retval=search_train();
-            if(retval==1){
+            printf("\n\t\t\t**=======Search Train =======**\n");
+            printf("\n\t\t\t1. Back");
+            printf("\n\n\t\t\t Enter the Departure place    :");
+            scanf("%s", itr_dep);
+
+            if (strcmp(itr_dep, "1") == 0) {
                 goto tloop;
             }
-            goto tloop;
+
+            printf("\n\n\t\t\t Enter the Arrival place      :");
+            scanf("%s", itr_arr);
+
+            if (strcmp(itr_arr, "1") == 0) {
+                goto tloop;
+            }
+
+            fp = fopen("train_book.txt", "r");
+            temp = fopen("temp_book.txt", "w");
+
+            if (fp == NULL || temp == NULL || ub == NULL) {
+                printf("Error opening file for reading.\n");
+                getch();
+                goto tloop;
+            }
+
+            while (fscanf(fp, "\n Train name     :%s\n Train number   :%d\n Departure time :%s\n Arrival time   :%s",
+                  train.tp_name, &train.tp_no, train.depart_time, train.arrive_time) != EOF) {
+                  fscanf(fp, "\n Departure place:%s\n Arrival place  :%s\n Ticket fare    :%d\n Time duration  :%s\nAvailable tickets  :%d",
+                  train.depart_place, train.arrive_place, &train.tp_fare, train.tp_tm_dur, &train.tp_av_tic);
+                  fscanf(fp, "\n_______________________________________________________________________________________");
+
+                  num++;
+
+                  if(strcmp(train.depart_place, itr_dep) == 0 && strcmp(train.arrive_place, itr_arr) == 0) {
+                    found = 1;
+                    system("cls");
+                    printf("\n\t\t\t**=======Train Details =======**\n");
+                    printf("\n\n\t\t\tTrain ID        : %d", num);
+                    printf("\n\n\t\t\tTrain name      : %s Express", train.tp_name);
+                    printf("\n\t\t\tTrain number      : %d", train.tp_no);
+                    printf("\n\t\t\tDeparture time    : %s", train.depart_time);
+                    printf("\n\t\t\tArrival time      : %s", train.arrive_time);
+                    printf("\n\t\t\tDeparture place   : %s", train.depart_place);
+                    printf("\n\t\t\tArrival place     : %s", train.arrive_place);
+                    printf("\n\t\t\tTicket fare       : %d", train.tp_fare);
+                    printf("\n\t\t\tTime duration     : %s", train.tp_tm_dur);
+                    printf("\n\t\t\tAvailable tickets : %d", train.tp_av_tic);
+                    printf("\n\t\t________________________________________________");
+
+                    printf("\n\t\t\t1. Next");
+                    printf("\t\t\t\t3. Book this Train");
+                    printf("\n\t\t\t2. No");
+                    printf("\n\n\t\t\tEnter the choice :");
+                    scanf("%d", &c);
+
+                    if (c == 3) {
+                        ub = fopen("user.txt","r");
+                        utemp = fopen("utemp.txt","w");
+                        while (fscanf(ub, "username  : %s\npassword  : %s\n", username, password)!=EOF){
+                            fscanf(ub, "Balance   : %d",&u_balance);
+                            fscanf(ub, "\n______________________________\n");
+
+                            if(strcmp(username,u_name)==0 && strcmp(password,u_pwd)==0){
+                                loop5:
+                                system("cls");
+                                printf("\n\t\t\t**======Train Ticket Booking=======**\n");
+                                printf("\n\n\n\t\t\tEnter the number of tickets to book: ");
+                                scanf("%d", &tickets_to_book);
+
+                                if (tickets_to_book <= train.tp_av_tic) {
+
+                                    t_fare=(tickets_to_book*train.tp_fare);
+                                    printf("\n\t\t\t Total ticket price      : %d",t_fare);
+                                    printf("\n\t\t\tAre you sure want to book this bus...");
+                                    getch();
+
+                                    loop6:
+                                    system("cls");
+                                    printf("\n\t\t\t\t**=======Payment=======**\n");
+                                    printf("\n________________________________");
+                                    printf("\n| Total ticket price      : %d\t|",t_fare);
+                                    printf("\n|_______________________________|");
+                                    printf("\n\n\t\t\t\tEnter the amount  :");
+                                    scanf("%d", &i_amt);
+                                    if(i_amt<=u_balance){
+                                        if (i_amt == t_fare) {
+                                            u_balance -=i_amt;
+                                            train.tp_av_tic -= tickets_to_book;
+                                            system("cls");
+                                            printf("\n\n\t\t\tTrain tickets booked successfully for %d tickets!", tickets_to_book);
+                                            printf("\n\n\t\t\t**=======Ticket details=======**\n");
+                                            printf("\n\t\t_______________________________________________________            Available Balance  : %d",u_balance);
+                                            printf("\n\t\t| Name            :  %s", username);
+                                            printf("\n\t\t| %s Express        %s To %s", train.tp_name, train.depart_place, train.arrive_place);
+                                            printf("\n\t\t| Train number    :  %d", train.tp_no);
+                                            printf("\n\t\t| Tickets booked  :  %d", tickets_to_book);
+                                            printf("\n\t\t| Travel duration :  %s", train.tp_tm_dur);
+                                            printf("\n\t\t| Departure Time  :  %s", train.depart_time);
+                                            printf("\n\t\t| Arrival Time    :  %s", train.arrive_time);
+                                            printf("\n\t\t| Total price     :  %d", t_fare);
+                                            printf("\n\t\t________________________________________________________");
+                                            printf("\n\n\t\t Happy Journey.........");
+                                            getch();
+
+                                            fprintf(utemp, "username  : %s\npassword  : %s\n", username, password);
+                                            fprintf(utemp, "Balance   : %d",u_balance);
+                                            fprintf(utemp, "\n______________________________\n");
+
+                                            fprintf(temp, "\n Train name     :%s\n Train number   :%d\n Departure time :%s\n Arrival time   :%s",
+                                            train.tp_name, train.tp_no, train.depart_time, train.arrive_time);
+                                            fprintf(temp, "\n Departure place:%s\n Arrival place  :%s\n Ticket fare    :%d\n Time duration  :%s\nAvailable tickets  :%d",
+                                            train.depart_place, train.arrive_place, train.tp_fare, train.tp_tm_dur, train.tp_av_tic);
+                                            fprintf(temp, "\n_______________________________________________________________________________________");
+                                            strcpy(itr_dep,"dummy");
+
+                                        }else{
+                                            printf("\n\t\t\tEntered amount does not match. Please enter the correct amount %d", t_fare);
+                                            getch();
+                                            goto loop6;
+                                        }
+                                    }else{
+                                        printf("\n\t\t\tInsufficient money....   Available balance  : %d",u_balance);
+                                        getch();
+                                        goto loop5;
+                                    }
+                                }else{
+                                    printf("\n\t\t\tNot enough tickets available....(Available tickets: %d",train.tp_av_tic );
+                                    getch();
+                                    goto loop5;
+                                }
+                            }else{
+                                fprintf(utemp, "username  : %s\npassword  : %s\n", username, password);
+                                fprintf(utemp, "Balance   : %d",u_balance);
+                                fprintf(utemp, "\n______________________________\n");
+                            }
+                        }
+                        fclose(ub);
+                        fclose(utemp);
+                        remove("user.txt");
+                        rename("utemp.txt","user.txt");
+                    }else if(c == 2){
+                        strcpy(itr_dep,"dummy");
+                        fprintf(temp, "\n Train name     :%s\n Train number   :%d\n Departure time :%s\n Arrival time   :%s",
+                        train.tp_name, train.tp_no, train.depart_time, train.arrive_time);
+                        fprintf(temp, "\n Departure place:%s\n Arrival place  :%s\n Ticket fare    :%d\n Time duration  :%s\nAvailable tickets  :%d",
+                        train.depart_place, train.arrive_place, train.tp_fare, train.tp_tm_dur, train.tp_av_tic);
+                        fprintf(temp, "\n_______________________________________________________________________________________");
+                    }else{
+                        found=2;
+                        fprintf(temp, "\n Train name     :%s\n Train number   :%d\n Departure time :%s\n Arrival time   :%s",
+                        train.tp_name, train.tp_no, train.depart_time, train.arrive_time);
+                        fprintf(temp, "\n Departure place:%s\n Arrival place  :%s\n Ticket fare    :%d\n Time duration  :%s\nAvailable tickets  :%d",
+                        train.depart_place, train.arrive_place, train.tp_fare, train.tp_tm_dur, train.tp_av_tic);
+                        fprintf(temp, "\n_______________________________________________________________________________________");
+                    }
+
+                }else{
+                    fprintf(temp, "\n Train name     :%s\n Train number   :%d\n Departure time :%s\n Arrival time   :%s",
+                    train.tp_name, train.tp_no, train.depart_time, train.arrive_time);
+                    fprintf(temp, "\n Departure place:%s\n Arrival place  :%s\n Ticket fare    :%d\n Time duration  :%s\nAvailable tickets  :%d",
+                    train.depart_place, train.arrive_place, train.tp_fare, train.tp_tm_dur, train.tp_av_tic);
+                    fprintf(temp, "\n_______________________________________________________________________________________");
+                }
+
+            }
+
+            if(found==0 || found==2){
+                printf("\n\t\t\tNo Trains name found from %s to %s",itr_dep,itr_arr);
+                printf("\n\t\t_________________________________________");
+                printf("\n\t\t\t1. Search again");
+                printf("\n\t\t\t2. Back");
+                printf("\n\t\t_________________________________________");
+                printf("\n\t\t\tEnter the choice   :");
+                scanf("%d",&m);
+
+                if(m==1){
+                    num=0;
+                    found=0;
+                    fclose(fp);
+                    fclose(temp);
+                    remove("train_book.txt");
+                    rename("temp_book.txt","train_book.txt");
+                    goto loop1;
+                }else{
+                    num=0;
+                    found=0;
+                    fclose(fp);
+                    fclose(temp);
+                    remove("train_book.txt");
+                    rename("temp_book.txt","train_book.txt");
+                    goto tloop;
+                }
+            }else{
+                num=0;
+                found=0;
+                fclose(fp);
+                fclose(temp);
+                remove("train_book.txt");
+                rename("temp_book.txt","train_book.txt");
+                goto tloop;
+            }
             break;
         case 2:
             system("cls");
@@ -603,211 +833,6 @@ int train_tik_book()                                                            
     return 0;
 
 }
-
-int search_train()
-{
-    FILE *fp, *temp, *ub, *utemp;
-    struct travel train;
-    int found = 0, c, m,tickets_to_book,t_fare,i_amt,num=0,u_balance;
-    char itr_dep[20], itr_arr[20];
-    char username[20],password[20];
-
-    fp = fopen("train_book.txt", "r");
-    temp = fopen("temp_book.txt", "w");
-
-    if (fp == NULL || temp == NULL || ub == NULL) {
-        printf("Error opening file for reading.\n");
-        getch();
-        return 1;
-    }
-
-    loop:
-    system("cls");
-    printf("\n\t\t\t**=======Search Train =======**\n");
-    printf("\n\t\t\t1. Back");
-    printf("\n\n\t\t\t Enter the Departure place    :");
-    scanf("%s", itr_dep);
-
-    if (strcmp(itr_dep, "1") == 0) {
-        fclose(fp);
-        fclose(temp);
-        return 1;
-    }
-
-    printf("\n\n\t\t\t Enter the Arrival place      :");
-    scanf("%s", itr_arr);
-
-    loop4:
-    while (fscanf(fp, "\n Train name     :%s\n Train number   :%d\n Departure time :%s\n Arrival time   :%s",
-                  train.tp_name, &train.tp_no, train.depart_time, train.arrive_time) != EOF) {
-        fscanf(fp, "\n Departure place:%s\n Arrival place  :%s\n Ticket fare    :%d\n Time duration  :%s\nAvailable tickets  :%d",
-               train.depart_place, train.arrive_place, &train.tp_fare, train.tp_tm_dur, &train.tp_av_tic);
-        fscanf(fp, "\n_______________________________________________________________________________________");
-
-        if(found==1){
-            strcpy(itr_arr,"dummy");
-        }
-        num++;
-
-        if (strcmp(train.depart_place, itr_dep) == 0 && strcmp(train.arrive_place, itr_arr) == 0) {
-            found = 1;
-            system("cls");
-            printf("\n\t\t\t**=======Train Details =======**\n");
-            printf("\n\n\t\t\tTrain ID        : %d", num);
-            printf("\n\n\t\t\tTrain name      : %s Express", train.tp_name);
-            printf("\n\t\t\tTrain number      : %d", train.tp_no);
-            printf("\n\t\t\tDeparture time    : %s", train.depart_time);
-            printf("\n\t\t\tArrival time      : %s", train.arrive_time);
-            printf("\n\t\t\tDeparture place   : %s", train.depart_place);
-            printf("\n\t\t\tArrival place     : %s", train.arrive_place);
-            printf("\n\t\t\tTicket fare       : %d", train.tp_fare);
-            printf("\n\t\t\tTime duration     : %s", train.tp_tm_dur);
-            printf("\n\t\t\tAvailable tickets : %d", train.tp_av_tic);
-            printf("\n\t\t________________________________________________");
-
-            printf("\n\t\t\t1. Next");
-            printf("\t\t\t\t3. Book this Train");
-            printf("\n\t\t\t2. Previous");
-            printf("\n\n\t\t\tEnter the choice :");
-            scanf("%d", &c);
-
-            if (c == 3) {
-                ub = fopen("user.txt","r");
-                utemp = fopen("utemp.txt","w");
-                while (fscanf(ub, "username  : %s\npassword  : %s\n", username, password)!=EOF){
-                    fscanf(ub, "Balance   : %d",&u_balance);
-                    fscanf(ub, "\n______________________________\n");
-
-                    if(strcmp(username,u_name)==0 && strcmp(password,u_pwd)==0){
-                        loop5:
-                        system("cls");
-                        printf("\n\t\t\t**======Train Ticket Booking=======**\n");
-                        printf("\n\n\n\t\t\tEnter the number of tickets to book: ");
-                        scanf("%d", &tickets_to_book);
-
-                        if (tickets_to_book <= train.tp_av_tic) {
-
-                            t_fare=(tickets_to_book*train.tp_fare);
-                            printf("\n\t\t\t Total ticket price      : %d",t_fare);
-                            printf("\n\t\t\tAre you sure want to book this train...");
-                            getch();
-
-                            loop6:
-                            system("cls");
-                            printf("\n\t\t\t\t**=======Payment=======**\n");
-                            printf("\n________________________________");
-                            printf("\n| Total ticket price      : %d\t|",t_fare);
-                            printf("\n|_______________________________|");
-                            printf("\n\n\t\t\t\tEnter the amount  :");
-                            scanf("%d", &i_amt);
-                            if(i_amt<=u_balance){
-                                if (i_amt == t_fare) {
-                                    u_balance -=i_amt;
-                                    train.tp_av_tic -= tickets_to_book;
-                                    system("cls");
-                                    printf("\n\n\t\t\tTrain tickets booked successfully for %d tickets!", tickets_to_book);
-                                    printf("\n\n\t\t\t**=======Ticket details=======**\n");
-                                    printf("\n\t\t_______________________________________________________            Available Balance  : %d",u_balance);
-                                    printf("\n\t\t| %s Express           %s To %s", train.tp_name, train.depart_place, train.arrive_place);
-                                    printf("\n\t\t| Train number    :  %d", train.tp_no);
-                                    printf("\n\t\t| Tickets booked  :  %d", tickets_to_book);
-                                    printf("\n\t\t| Travel duration :  %s", train.tp_tm_dur);
-                                    printf("\n\t\t| Departure Time  :  %s", train.depart_time);
-                                    printf("\n\t\t| Arrival Time    :  %s", train.arrive_time);
-                                    printf("\n\t\t| Total price     :  %d", t_fare);
-                                    printf("\n\t\t________________________________________________________");
-                                    printf("\n\n\t\t Happy Journey.........");
-
-                                    fprintf(utemp, "username  : %s\npassword  : %s\n", username, password);
-                                    fprintf(utemp, "Balance   : %d",u_balance);
-                                    fprintf(utemp, "\n______________________________\n");
-
-                                    fprintf(temp, "\n Train name     :%s\n Train number   :%d\n Departure time :%s\n Arrival time   :%s",
-                                    train.tp_name, train.tp_no, train.depart_time, train.arrive_time);
-                                    fprintf(temp, "\n Departure place:%s\n Arrival place  :%s\n Ticket fare    :%d\n Time duration  :%s\nAvailable tickets  :%d",
-                                    train.depart_place, train.arrive_place, train.tp_fare, train.tp_tm_dur, train.tp_av_tic);
-                                    fprintf(temp, "\n_______________________________________________________________________________________");
-
-                                }else{
-                                    printf("\n\t\t\tEntered amount does not match. Please enter the correct amount %d", t_fare);
-                                    getch();
-                                    goto loop6;
-                                }
-                                getch();
-                            }else{
-                               printf("\n\t\t\tInsufficient money....   Available balance  : %d",u_balance);
-                               getch();
-                               goto loop5;
-                            }
-                        }else{
-                             printf("\n\t\t\tNot enough tickets available....(Available tickets: %d",train.tp_av_tic );
-                             getch();
-                             goto loop5;
-                        }
-                    }else{
-                            fprintf(utemp, "username  : %s\npassword  : %s\n", username, password);
-                            fprintf(utemp, "Balance   : %d",u_balance);
-                            fprintf(utemp, "\n______________________________\n");
-                    }
-                }
-                fclose(ub);
-                fclose(utemp);
-                remove("user.txt");
-                rename("utemp.txt","user.txt");
-            }else if(c == 2){
-                rewind(fp);
-            }else{
-                found=0;
-                fprintf(temp, "\n Train name     :%s\n Train number   :%d\n Departure time :%s\n Arrival time   :%s",
-                       train.tp_name, train.tp_no, train.depart_time, train.arrive_time);
-                fprintf(temp, "\n Departure place:%s\n Arrival place  :%s\n Ticket fare    :%d\n Time duration  :%s\nAvailable tickets  :%d",
-                       train.depart_place, train.arrive_place, train.tp_fare, train.tp_tm_dur, train.tp_av_tic);
-                fprintf(temp, "\n_______________________________________________________________________________________");
-            }
-
-        }else{
-        fprintf(temp, "\n Train name     :%s\n Train number   :%d\n Departure time :%s\n Arrival time   :%s",
-                train.tp_name, train.tp_no, train.depart_time, train.arrive_time);
-        fprintf(temp, "\n Departure place:%s\n Arrival place  :%s\n Ticket fare    :%d\n Time duration  :%s\nAvailable tickets  :%d",
-                train.depart_place, train.arrive_place, train.tp_fare, train.tp_tm_dur, train.tp_av_tic);
-        fprintf(temp, "\n_______________________________________________________________________________________");
-        }
-
-    }
-
-    if (found == 0){
-        num=0;
-        printf("\n\n\t\t_________________________________________________");
-        printf("\n\t\t\tNo Trains Found From %s To %s ", itr_dep, itr_arr);
-        printf("\n\t\t\t1. Search another");
-        printf("\n\t\t\t2. Back");
-        loop3:
-        printf("\n\t\t\tEnter the choice  :");
-        scanf("%d", &m);
-
-        if (m == 1){
-            rewind(fp);
-            goto loop;
-        }else if (m == 2){
-            fclose(fp);
-            fclose(temp);
-            return 1;
-        }else{
-            printf("\n\t\t\tPlease enter a valid input....");
-            getch();
-            goto loop3;
-        }
-    }
-
-    fclose(fp);
-    fclose(temp);
-    remove("train_book.txt");
-    rename("temp_book.txt", "train_book.txt");
-    getch();
-
-    return 1;
-}
-
 
 int view_trains()
 {
@@ -834,6 +859,7 @@ int view_trains()
 
         num++;
         printf("\n\t\t\tTrain ID          : %d", num);
+        printf("\n\t\t\tTrain name        : %s", train.tp_name);
         printf("\n\t\t\tTrain number      : %d", train.tp_no);
         printf("\n\t\t\tDeparture time    : %s", train.depart_time);
         printf("\n\t\t\tArrival time      : %s", train.arrive_time);
@@ -853,7 +879,11 @@ int view_trains()
 
 int bus_tik_book()                                                                                          //Train tickect booking interface
 {
-    int m;
+    FILE *fp, *temp,*ub, *utemp;
+    struct travel bus;
+    int found = 0, c, m,n, tickets_to_book,t_fare, i_amt,num=0,u_balance;
+    char itr_dep[20], itr_arr[20],username[20],password[20];
+
     tloop:
     system("cls");
     printf("\n\t\t\t**=======bus ticket bookings=======**\n");
@@ -862,20 +892,213 @@ int bus_tik_book()                                                              
     printf("\n\t\t\t3.Back");
     printf("\n\t\t\t___________________________");
     printf("\n\t\t\tEnter the choice :");
-    scanf("%d",&m);
+    scanf("%d",&n);
 
-    if(m==3){
+    if(n==3){
         return 1;
     }
-    switch(m){
+    switch(n){
         case 1:
+            loop:
             system("cls");
-            retval=search_bus();
-            if(retval==1){
+            printf("\n\t\t\t**=======Search bus =======**\n");
+            printf("\n\t\t\t1. Back");
+            printf("\n\n\t\t\t Enter the Departure place    :");
+            scanf("%s", itr_dep);
+
+            if (strcmp(itr_dep, "1") == 0) {
                 goto tloop;
             }
-            getch();
-            goto tloop;
+
+            printf("\n\n\t\t\t Enter the Arrival place      :");
+            scanf("%s", itr_arr);
+
+            if (strcmp(itr_arr, "1") == 0) {
+                goto tloop;
+            }
+
+            fp = fopen("bus_book.txt", "r");
+            temp = fopen("temp_book.txt", "w");
+
+            if (fp == NULL) {
+                printf("Error opening file for reading.\n");
+                getch();
+                goto tloop;
+            }
+
+            while (fscanf(fp, "\n Bus name     :%s\n Bus number   :%d\n Departure time :%s\n Arrival time   :%s",
+                bus.tp_name, &bus.tp_no, bus.depart_time, bus.arrive_time) != EOF) {
+                fscanf(fp, "\n Departure place:%s\n Arrival place  :%s\n Ticket fare    :%d\n Time duration  :%s\nAvailable tickets  :%d",
+                bus.depart_place, bus.arrive_place, &bus.tp_fare, bus.tp_tm_dur, &bus.tp_av_tic);
+                fscanf(fp, "\n_______________________________________________________________________________________");
+
+                num++;
+                if (strcmp(bus.depart_place, itr_dep) == 0 && strcmp(bus.arrive_place, itr_arr) == 0) {
+                    found = 1;
+                    system("cls");
+                    printf("\n\t\t\t**=======Bus Details =======**\n");
+                    printf("\n\n\t\t\tBus ID           :%d", num);
+                    printf("\n\n\t\t\tBus name         : %s Express", bus.tp_name);
+                    printf("\n\t\t\tbus number        : TN-%d", bus.tp_no);
+                    printf("\n\t\t\tDeparture time    : %s", bus.depart_time);
+                    printf("\n\t\t\tArrival time      : %s", bus.arrive_time);
+                    printf("\n\t\t\tDeparture place   : %s", bus.depart_place);
+                    printf("\n\t\t\tArrival place     : %s", bus.arrive_place);
+                    printf("\n\t\t\tTicket fare       : %d", bus.tp_fare);
+                    printf("\n\t\t\tTime duration     : %s", bus.tp_tm_dur);
+                    printf("\n\t\t\tAvailable tickets : %d", bus.tp_av_tic);
+                    printf("\n\t\t________________________________________________");
+
+                    printf("\n\t\t\t1. Next");
+                    printf("\t\t\t\t3. Book this bus");
+                    printf("\n\t\t\t2. No");
+                    printf("\n\n\t\t\tEnter the choice :");
+                    scanf("%d", &c);
+
+                    if (c == 3) {
+                        ub = fopen("user.txt","r");
+                        utemp = fopen("utemp.txt","w");
+                        while (fscanf(ub, "username  : %s\npassword  : %s\n", username, password)!=EOF){
+                        fscanf(ub, "Balance   : %d",&u_balance);
+                        fscanf(ub, "\n______________________________\n");
+
+                        if(strcmp(username,u_name)==0 && strcmp(password,u_pwd)==0){
+                        loop5:
+                            system("cls");
+                            printf("\n\n\n\t\t\tEnter the number of tickets to book: ");
+                            scanf("%d", &tickets_to_book);
+
+                            if (tickets_to_book <= bus.tp_av_tic) {
+                                t_fare=(tickets_to_book*bus.tp_fare);
+                                printf("\n\t\t\t Total ticket price      : %d",t_fare);
+                                printf("\n\t\t\tAre you sure want to book this movie...");
+                                getch();
+
+                                loop6:
+                                system("cls");
+                                printf("\n\t\t\t\t**=======Payment=======**\n");
+                                printf("\n________________________________");
+                                printf("\n| Total ticket price      : %d\t|",t_fare);
+                                printf("\n|_______________________________|");
+                                printf("\n\n\t\t\t\tEnter the amount  :");
+                                scanf("%d", &i_amt);
+
+                                if(i_amt<=u_balance){
+
+                                    if (i_amt == t_fare) {
+                                        system("cls");
+                                        u_balance -=i_amt;
+                                        bus.tp_av_tic -= tickets_to_book;
+                                        printf("\n\n\t\t\tbus tickets booked successfully for %d tickets!", tickets_to_book);
+                                        printf("\n\n\t\t\t**=======Ticket details=======**\n");
+                                        printf("\n\t\t_______________________________________________________             Available Balance : %d",u_balance);
+                                        printf("\n\t\t| Name            :  %s", username);
+                                        printf("\n\t\t| %s Express        %s To %s", bus.tp_name, bus.depart_place, bus.arrive_place);
+                                        printf("\n\t\t| Bus number      :  %d", bus.tp_no);
+                                        printf("\n\t\t| Tickets booked  :  %d", tickets_to_book);
+                                        printf("\n\t\t| Travel duration :  %s", bus.tp_tm_dur);
+                                        printf("\n\t\t| Departure Time  :  %s", bus.depart_time);
+                                        printf("\n\t\t| Arrival Time    :  %s", bus.arrive_time);
+                                        printf("\n\t\t| Total price     :  %d", t_fare);
+                                        printf("\n\t\t________________________________________________________");
+                                        printf("\n\t\t Happy Journey.........");
+                                        getch();
+
+                                        fprintf(utemp, "username  : %s\npassword  : %s\n", username, password);
+                                        fprintf(utemp, "Balance   : %d",u_balance);
+
+                                        fprintf(temp, "\n Bus name     :%s\n Bus number   :%d\n Departure time :%s\n Arrival time   :%s",
+                                            bus.tp_name, bus.tp_no, bus.depart_time, bus.arrive_time);
+                                        fprintf(temp, "\n Departure place:%s\n Arrival place  :%s\n Ticket fare    :%d\n Time duration  :%s\nAvailable tickets  :%d",
+                                            bus.depart_place, bus.arrive_place, bus.tp_fare, bus.tp_tm_dur, bus.tp_av_tic);
+                                        fprintf(temp, "\n_______________________________________________________________________________________");
+                                        strcpy(itr_dep,"dummy");
+
+                                    }else{
+                                        printf("\n\t\t\tEntered amount does not match. Please enter the correct amount %d", t_fare);
+                                        getch();
+                                        goto loop6;
+                                    }
+                                }else{
+                                    printf("\n\t\t\tInsufficient money....   Available balance  : %d",u_balance);
+                                    getch();
+                                    goto loop5;
+                                }
+                            }else{
+                                printf("\n\t\t\tNot enough tickets available. Available tickets: %d", bus.tp_av_tic);
+                                getch();
+                                goto loop5;
+                            }
+                        }else{
+                            fprintf(utemp, "username  : %s\npassword  : %s\n", username, password);
+                            fprintf(utemp, "Balance   : %d",u_balance);
+                            fprintf(utemp, "\n______________________________\n");
+                        }
+                    }
+                    fclose(ub);
+                    fclose(utemp);
+                    remove("user.txt");
+                    rename("utemp.txt","user.txt");
+                } else if (c == 2) {
+                    strcpy(itr_dep,"dummy");
+                    fprintf(temp, "\n Bus name     :%s\n Bus number   :%d\n Departure time :%s\n Arrival time   :%s",
+                    bus.tp_name, bus.tp_no, bus.depart_time, bus.arrive_time);
+                    fprintf(temp, "\n Departure place:%s\n Arrival place  :%s\n Ticket fare    :%d\n Time duration  :%s\nAvailable tickets  :%d",
+                    bus.depart_place, bus.arrive_place, bus.tp_fare, bus.tp_tm_dur, bus.tp_av_tic);
+                    fprintf(temp, "\n_______________________________________________________________________________________");
+                }else{
+                    found=2;
+                    fprintf(temp, "\n Bus name     :%s\n Bus number   :%d\n Departure time :%s\n Arrival time   :%s",
+                    bus.tp_name, bus.tp_no, bus.depart_time, bus.arrive_time);
+                    fprintf(temp, "\n Departure place:%s\n Arrival place  :%s\n Ticket fare    :%d\n Time duration  :%s\nAvailable tickets  :%d",
+                    bus.depart_place, bus.arrive_place, bus.tp_fare, bus.tp_tm_dur, bus.tp_av_tic);
+                    fprintf(temp, "\n_______________________________________________________________________________________");
+                }
+            }else{
+                fprintf(temp, "\n Bus name     :%s\n Bus number   :%d\n Departure time :%s\n Arrival time   :%s",
+                bus.tp_name, bus.tp_no, bus.depart_time, bus.arrive_time);
+                fprintf(temp, "\n Departure place:%s\n Arrival place  :%s\n Ticket fare    :%d\n Time duration  :%s\nAvailable tickets  :%d",
+                bus.depart_place, bus.arrive_place, bus.tp_fare, bus.tp_tm_dur, bus.tp_av_tic);
+                fprintf(temp, "\n_______________________________________________________________________________________");
+             }
+
+            }
+
+            if(found==0 || found==2){
+                printf("\n\t\t\tNo Trains name found from %s to %s",itr_dep,itr_arr);
+                printf("\n\t\t_________________________________________");
+                printf("\n\t\t\t1. Search again");
+                printf("\n\t\t\t2. Back");
+                printf("\n\t\t_________________________________________");
+                printf("\n\t\t\tEnter the choice   :");
+                scanf("%d",&m);
+
+                if(m==1){
+                    num=0;
+                    found=0;
+                    fclose(fp);
+                    fclose(temp);
+                    remove("bus_book.txt");
+                    rename("temp_book.txt","bus_book.txt");
+                    goto loop;
+                }else{
+                    num=0;
+                    found=0;
+                    fclose(fp);
+                    fclose(temp);
+                    remove("bus_book.txt");
+                    rename("temp_book.txt","bus_book.txt");
+                    goto tloop;
+                }
+            }else{
+                num=0;
+                found=0;
+                fclose(fp);
+                fclose(temp);
+                remove("bus_book.txt");
+                rename("temp_book.txt","bus_book.txt");
+                goto tloop;
+            }
             break;
         case 2:
             system("cls");
@@ -890,207 +1113,6 @@ int bus_tik_book()                                                              
     }
     return 0;
 
-}
-
-
-int search_bus() {
-    FILE *fp, *temp,*ub, *utemp;
-    struct travel bus;
-    int found = 0, c, m, tickets_to_book,t_fare, i_amt,num=0,u_balance;
-    char itr_dep[20], itr_arr[20],username[20],password[20];
-
-    fp = fopen("bus_book.txt", "r");
-    temp = fopen("temp_book.txt", "w");
-
-    if (fp == NULL) {
-        printf("Error opening file for reading.\n");
-        getch();
-        return 0;
-    }
-
-    loop:
-    system("cls");
-    printf("\n\t\t\t**=======Search bus =======**\n");
-    printf("\n\t\t\t1. Back");
-    printf("\n\n\t\t\t Enter the Departure place    :");
-    scanf("%s", itr_dep);
-
-    if (strcmp(itr_dep, "1") == 0) {
-        fclose(fp);
-        fclose(temp);
-        return 1;
-    }
-
-    printf("\n\n\t\t\t Enter the Arrival place      :");
-    scanf("%s", itr_arr);
-
-    loop4:
-    while (fscanf(fp, "\n Bus name     :%s\n Bus number   :%d\n Departure time :%s\n Arrival time   :%s",
-                  bus.tp_name, &bus.tp_no, bus.depart_time, bus.arrive_time) != EOF) {
-        fscanf(fp, "\n Departure place:%s\n Arrival place  :%s\n Ticket fare    :%d\n Time duration  :%s\nAvailable tickets  :%d",
-               bus.depart_place, bus.arrive_place, &bus.tp_fare, bus.tp_tm_dur, &bus.tp_av_tic);
-        fscanf(fp, "\n_______________________________________________________________________________________");
-
-        if(found==1){
-            strcpy(itr_arr,"dummy");
-        }
-
-        num++;
-        if (strcmp(bus.depart_place, itr_dep) == 0 && strcmp(bus.arrive_place, itr_arr) == 0) {
-            found = 1;
-            system("cls");
-            printf("\n\t\t\t**=======Bus Details =======**\n");
-            printf("\n\n\t\t\tBus ID           :%d", num);
-            printf("\n\n\t\t\tBus name         : %s Express", bus.tp_name);
-            printf("\n\t\t\tbus number        : TN-%d", bus.tp_no);
-            printf("\n\t\t\tDeparture time    : %s", bus.depart_time);
-            printf("\n\t\t\tArrival time      : %s", bus.arrive_time);
-            printf("\n\t\t\tDeparture place   : %s", bus.depart_place);
-            printf("\n\t\t\tArrival place     : %s", bus.arrive_place);
-            printf("\n\t\t\tTicket fare       : %d", bus.tp_fare);
-            printf("\n\t\t\tTime duration     : %s", bus.tp_tm_dur);
-            printf("\n\t\t\tAvailable tickets : %d", bus.tp_av_tic);
-            printf("\n\t\t________________________________________________");
-
-            printf("\n\t\t\t1. Next");
-            printf("\t\t\t\t3. Book this bus");
-            printf("\n\t\t\t2. Previous");
-            printf("\n\n\t\t\tEnter the choice :");
-            scanf("%d", &c);
-
-            if (c == 3) {
-                ub = fopen("user.txt","r");
-                utemp = fopen("utemp.txt","w");
-                while (fscanf(ub, "username  : %s\npassword  : %s\n", username, password)!=EOF){
-                    fscanf(ub, "Balance   : %d",&u_balance);
-                    fscanf(ub, "\n______________________________\n");
-
-                    if(strcmp(username,u_name)==0 && strcmp(password,u_pwd)==0){
-                    loop5:
-                    system("cls");
-                    printf("\n\n\n\t\t\tEnter the number of tickets to book: ");
-                    scanf("%d", &tickets_to_book);
-
-                    if (tickets_to_book <= bus.tp_av_tic) {
-                        t_fare=(tickets_to_book*bus.tp_fare);
-                        printf("\n\t\t\t Total ticket price      : %d",t_fare);
-                        printf("\n\t\t\tAre you sure want to book this train...");
-                        getch();
-
-                        loop6:
-                        system("cls");
-                        printf("\n\t\t\t\t**=======Payment=======**\n");
-                        printf("\n________________________________");
-                        printf("\n| Total ticket price      : %d\t|",t_fare);
-                        printf("\n|_______________________________|");
-                        printf("\n\n\t\t\t\tEnter the amoun  :");
-                        scanf("%d", &i_amt);
-
-                        if(i_amt<=u_balance){
-
-                            if (i_amt == t_fare) {
-                                system("cls");
-                                u_balance -=i_amt;
-                                bus.tp_av_tic -= tickets_to_book;
-                                printf("\n\n\t\t\tbus tickets booked successfully for %d tickets!", tickets_to_book);
-                                printf("\n\n\t\t\t**=======Ticket details=======**\n");
-                                printf("\n\t\t_______________________________________________________             Available Balance : %d",u_balance);
-                                printf("\n\t\t| %s Express           %s To %s", bus.tp_name, bus.depart_place, bus.arrive_place);
-                                printf("\n\t\t| Bus number      :  %d", bus.tp_no);
-                                printf("\n\t\t| Tickets booked  :  %d", tickets_to_book);
-                                printf("\n\t\t| Travel duration :  %s", bus.tp_tm_dur);
-                                printf("\n\t\t| Departure Time  :  %s", bus.depart_time);
-                                printf("\n\t\t| Arrival Time    :  %s", bus.arrive_time);
-                                printf("\n\t\t| Total price     :  %d", t_fare);
-                                printf("\n\t\t________________________________________________________");
-                                printf("\n\t\t Happy Journey.........");
-
-                                fprintf(utemp, "username  : %s\npassword  : %s\n", username, password);
-                                fprintf(utemp, "Balance   : %d",u_balance);
-                                fprintf(utemp, "\n______________________________\n");
-
-                                fprintf(temp, "\n Bus name     :%s\n Bus number   :%d\n Departure time :%s\n Arrival time   :%s",
-                                bus.tp_name, bus.tp_no, bus.depart_time, bus.arrive_time);
-                                fprintf(temp, "\n Departure place:%s\n Arrival place  :%s\n Ticket fare    :%d\n Time duration  :%s\nAvailable tickets  :%d",
-                                bus.depart_place, bus.arrive_place, bus.tp_fare, bus.tp_tm_dur, bus.tp_av_tic);
-                                fprintf(temp, "\n_______________________________________________________________________________________");
-
-                            }else{
-                                printf("\n\t\t\tEntered amount does not match. Please enter the correct amount %d", t_fare);
-                                getch();
-                                goto loop6;
-                            }
-                        }else{
-                            printf("\n\t\t\tInsufficient money....   Available balance  : %d",u_balance);
-                            getch();
-                            goto loop5;
-                        }
-                    }else{
-                        printf("\n\t\t\tNot enough tickets available. Available tickets: %d", bus.tp_av_tic);
-                        getch();
-                        goto loop5;
-                    }
-                }else{
-                    fprintf(utemp, "username  : %s\npassword  : %s\n", username, password);
-                    fprintf(utemp, "Balance   : %d",u_balance);
-                    fprintf(utemp, "\n______________________________\n");
-                }
-            }
-            fclose(ub);
-            fclose(utemp);
-            remove("user.txt");
-            rename("utemp.txt","user.txt");
-        } else if (c == 2) {
-            rewind(fp);
-        }else{
-            found=0;
-            fprintf(temp, "\n Bus name     :%s\n Bus number   :%d\n Departure time :%s\n Arrival time   :%s",
-                    bus.tp_name, bus.tp_no, bus.depart_time, bus.arrive_time);
-                fprintf(temp, "\n Departure place:%s\n Arrival place  :%s\n Ticket fare    :%d\n Time duration  :%s\nAvailable tickets  :%d",
-                        bus.depart_place, bus.arrive_place, bus.tp_fare, bus.tp_tm_dur, bus.tp_av_tic);
-                fprintf(temp, "\n_______________________________________________________________________________________");
-            }
-        }else{
-            fprintf(temp, "\n Bus name     :%s\n Bus number   :%d\n Departure time :%s\n Arrival time   :%s",
-                bus.tp_name, bus.tp_no, bus.depart_time, bus.arrive_time);
-            fprintf(temp, "\n Departure place:%s\n Arrival place  :%s\n Ticket fare    :%d\n Time duration  :%s\nAvailable tickets  :%d",
-                bus.depart_place, bus.arrive_place, bus.tp_fare, bus.tp_tm_dur, bus.tp_av_tic);
-           fprintf(temp, "\n_______________________________________________________________________________________");
-        }
-
-    }
-
-    if (found == 0) {
-        num=0;
-        printf("\n\n\t\t_________________________________________________");
-        printf("\n\t\t\tNo buses Found From %s To %s ", itr_dep, itr_arr);
-        printf("\n\t\t\t1. Search another");
-        printf("\n\t\t\t2. Back");
-        loop3:
-        printf("\n\t\t\tEnter the choice  :");
-        scanf("%d", &m);
-
-        if (m == 1) {
-            rewind(fp);
-            goto loop;
-        } else if (m == 2) {
-            fclose(fp);
-            fclose(temp);
-            return 1;
-        } else {
-            printf("\n\t\t\tPlease enter a valid input....");
-            getch();
-            goto loop3;
-        }
-    }
-
-    fclose(fp);
-    fclose(temp);
-    remove("bus_book.txt");
-    rename("temp_book.txt", "bus_book.txt");
-    getch();
-
-    return 1;
 }
 
 int view_bus()                                                                                                           //view buses
@@ -1128,10 +1150,257 @@ int view_bus()                                                                  
     }
 
     fclose(fp);
-    getch();
     printf("\n\t\tPress enter to exit");
     getch();
     return 0;
+}
+
+int tamil_movie_book()
+{
+    struct movie tamil;
+    FILE *fp,*temp,*ub,*utemp;
+    int n,c,m,tickets_to_book,t_fare,found=0,num=0,u_balance,i_amt;
+    char i_mov_name[20],username[20],password[20];
+
+    hloop:
+    system("cls");
+    printf("\n\t\t\t**=======Tamil Movies Booking=======**\n");
+    printf("\n\t\t\t1. Search movies");
+    printf("\n\t\t\t2. View movies");
+    printf("\n\t\t\t3. Back");
+    printf("\n\t\t________________________________________");
+    printf("\n\t\t\tEnter the choice  :");
+    scanf("%d", &n);
+
+    if(n==3){
+        return 1;
+    }
+    switch(n){
+        case 1:
+            loop1:
+            fp=fopen("tamil_movie.txt","r");
+            temp=fopen("temp.txt","w");
+
+            if(fp==NULL || temp==NULL){
+                printf("\n\t\t\tError openning file....");
+                getch();
+                goto hloop;
+            }
+            system("cls");
+            printf("\n\t\t\t**=======Search Tamil Movies=======**\n");
+            printf("\n\t\t1. Back ");
+            printf("\n\t\t\tMovie name   : ");
+            scanf("%s",i_mov_name);
+
+            if(strcmp(i_mov_name,"1")==0){
+                fclose(fp);
+                fclose(temp);
+                goto hloop;
+            }
+
+            system("cls");
+            printf("\n\t\t\t**=======Tamil Movies=======**\n");
+            while(fscanf(fp,"\n Movie name     : %s\n Theater name   : %s",tamil.mov_name,tamil.mov_theater)!=EOF){
+                fscanf(fp,"\n Date           : %s\n Time           : %s",tamil.mov_date,tamil.mov_time);
+                fscanf(fp,"\n Ticket fare    : %d\n Available tickets : %d",&tamil.mov_t_fare,&tamil.mov_av_tic);
+                fscanf(fp,"\n_____________________________________________________");
+
+                num++;
+                if(strcmp(i_mov_name,tamil.mov_name)==0){
+                    found=1;
+                    system("cls");
+                    printf("\n\t\t\t**=======Tamil Movies=======**\n");
+                    printf("\n\t\t%d.      Movie name         : %s",num,tamil.mov_name);
+                    printf("\n\t\t\tTheater name       : %s",tamil.mov_theater);
+                    printf("\n\t\t\tDate               : %s",tamil.mov_date);
+                    printf("\n\t\t\tTiming             : %s",tamil.mov_time);
+                    printf("\n\t\t\tTicket price       : %d",tamil.mov_t_fare);
+                    printf("\n\t\t\tAvailable tickets  : %d",tamil.mov_av_tic);
+                    printf("\n\t\t_____________________________________________");
+
+                    printf("\n\t\t\t1. Next");
+                    printf("\t\t\t\t3. Book this movie");
+                    printf("\n\t\t\t2. No");
+                    printf("\n\n\t\t\tEnter the choice :");
+                    scanf("%d", &c);
+
+                    if (c == 3) {
+                        ub = fopen("user.txt","r");
+                        utemp = fopen("utemp.txt","w");
+                        while (fscanf(ub, "username  : %s\npassword  : %s\n", username, password)!=EOF){
+                            fscanf(ub, "Balance   : %d",&u_balance);
+                            fscanf(ub, "\n______________________________\n");
+
+                            if(strcmp(username,u_name)==0 && strcmp(password,u_pwd)==0){
+                            loop5:
+                                system("cls");
+                                printf("\n\n\n\t\t\tEnter the number of tickets to book: ");
+                                scanf("%d", &tickets_to_book);
+
+                                if (tickets_to_book <= tamil.mov_av_tic) {
+                                    t_fare=(tickets_to_book*tamil.mov_t_fare);
+                                    printf("\n\t\t\t Total ticket price      : %d",t_fare);
+                                    printf("\n\t\t\tAre you sure want to book this train...");
+                                    getch();
+
+                                    loop6:
+                                    system("cls");
+                                    printf("\n\t\t\t\t**=======Payment=======**\n");
+                                    printf("\n________________________________");
+                                    printf("\n| Total ticket price      : %d\t|",t_fare);
+                                    printf("\n|_______________________________|");
+                                    printf("\n\n\t\t\t\tEnter the amount  :");
+                                    scanf("%d", &i_amt);
+
+                                   if(i_amt<=u_balance){
+
+                                      if (i_amt == t_fare) {
+                                          system("cls");
+                                          u_balance -=i_amt;
+                                          tamil.mov_av_tic -= tickets_to_book;
+                                          printf("\n\n\t\t\tbus tickets booked successfully for %d tickets!", tickets_to_book);
+                                          printf("\n\n\t\t\t**=======Ticket details=======**\n");
+                                          printf("\n\t\t_______________________________________________________             Available Balance : %d",u_balance);
+                                          printf("\n\t\t| Name            : %s", username);
+                                          printf("\n\t\t| Movie           : %s", tamil.mov_name);
+                                          printf("\n\t\t| Theater name    : %s", tamil.mov_theater);
+                                          printf("\n\t\t| Tickets booked  : %d", tickets_to_book);
+                                          printf("\n\t\t| Date            : %s", tamil.mov_date);
+                                          printf("\n\t\t| Time            : %s", tamil.mov_time);
+                                          printf("\n\t\t| Total fare      : %d", t_fare);
+                                          printf("\n\t\t________________________________________________________");
+                                          printf("\n\n\t\t Enjoy Your Movie.........");
+                                          getch();
+
+                                          fprintf(utemp, "username  : %s\npassword  : %s\n", username, password);
+                                          fprintf(utemp, "Balance   : %d",u_balance);
+
+                                          fprintf(temp,"\n Movie name     : %s\n Theater name   : %s",tamil.mov_name,tamil.mov_theater);
+                                          fprintf(temp,"\n Date           : %s\n Time           : %s",tamil.mov_date,tamil.mov_time);
+                                          fprintf(temp,"\n Ticket fare    : %d\n Available tickets : %d",tamil.mov_t_fare,tamil.mov_av_tic);
+                                          fprintf(temp,"\n_____________________________________________________");
+                                          strcpy(i_mov_name,"dummy");
+
+                                       }else{
+                                          printf("\n\t\t\tEntered amount does not match. Please enter the correct amount %d", t_fare);
+                                          getch();
+                                          goto loop6;
+                                      }
+                                    }else{
+                                        printf("\n\t\t\tInsufficient money....   Available balance  : %d",u_balance);
+                                        getch();
+                                        goto loop5;
+                                    }
+                                }else{
+                                    printf("\n\t\t\tNot enough tickets available. Available tickets: %d", tamil.mov_av_tic);
+                                    getch();
+                                    goto loop5;
+                                }
+                            }else{
+                                fprintf(utemp, "username  : %s\npassword  : %s\n", username, password);
+                                fprintf(utemp, "Balance   : %d",u_balance);
+                                fprintf(utemp, "\n______________________________\n");
+                            }
+                        }
+                        fclose(ub);
+                        fclose(utemp);
+                        remove("user.txt");
+                        rename("utemp.txt","user.txt");
+                    } else if (c == 2) {
+                            strcpy(i_mov_name,"dummy");
+                            fprintf(temp,"\n Movie name     : %s\n Theater name   : %s",tamil.mov_name,tamil.mov_theater);
+                            fprintf(temp,"\n Date           : %s\n Time           : %s",tamil.mov_date,tamil.mov_time);
+                            fprintf(temp,"\n Ticket fare    : %d\n Available tickets : %d",tamil.mov_t_fare,tamil.mov_av_tic);
+                            fprintf(temp,"\n_____________________________________________________");
+                    }else{
+                        found=2;
+                        fprintf(temp,"\n Movie name     : %s\n Theater name   : %s",tamil.mov_name,tamil.mov_theater);
+                        fprintf(temp,"\n Date           : %s\n Time           : %s",tamil.mov_date,tamil.mov_time);
+                        fprintf(temp,"\n Ticket fare    : %d\n Available tickets : %d",tamil.mov_t_fare,tamil.mov_av_tic);
+                        fprintf(temp,"\n_____________________________________________________");
+                    }
+
+                }else{
+                   fprintf(temp,"\n Movie name     : %s\n Theater name   : %s",tamil.mov_name,tamil.mov_theater);
+                   fprintf(temp,"\n Date           : %s\n Time           : %s",tamil.mov_date,tamil.mov_time);
+                   fprintf(temp,"\n Ticket fare    : %d\n Available tickets : %d",tamil.mov_t_fare,tamil.mov_av_tic);
+                   fprintf(temp,"\n_____________________________________________________");
+                }
+            }
+            if(found==0 || found==2){
+                printf("\n\t\t\tNo Movies found as %s ",i_mov_name);
+                printf("\n\t\t_________________________________________");
+                printf("\n\t\t\t1. Search again");
+                printf("\n\t\t\t2. Back");
+                printf("\n\t\t_________________________________________");
+                printf("\n\t\t\tEnter the choice   :");
+                scanf("%d",&m);
+
+                if(m==1){
+                    num=0;
+                    found=0;
+                    fclose(fp);
+                    fclose(temp);
+                    remove("tamil_movie.txt");
+                    rename("temp.txt","tamil_movie.txt");
+                    goto loop1;
+                }else{
+                    num=0;
+                    found=0;
+                    fclose(fp);
+                    fclose(temp);
+                    remove("tamil_movie.txt");
+                    rename("temp.txt","tamil_movie.txt");
+                    goto hloop;
+                }
+            }else{
+                num=0;
+                found=0;
+                fclose(fp);
+                fclose(temp);
+                remove("tamil_movie.txt");
+                rename("temp.txt","tamil_movie.txt");
+                goto hloop;
+            }
+            break;
+        case 2:
+            retval=view_tamil_movie();
+            if(retval==1){
+                goto hloop;
+            }
+        default:
+            printf("\n\t\t\tplease Enter a valid input...");
+            getch();
+            goto hloop;
+    }
+    return 1;
+}
+
+int view_tamil_movie()
+{
+    struct movie tamil;
+    FILE *fp;
+    fp=fopen("tamil_movie.txt","r");
+
+    system("cls");
+    printf("\n\t\t\t**=======Tamil Movies=======**\n");
+    while(fscanf(fp,"\n Movie name     : %s\n Theater name   : %s",tamil.mov_name,tamil.mov_theater)!=EOF){
+        fscanf(fp,"\n Date           : %s\n Time           : %s",tamil.mov_date,tamil.mov_time);
+        fscanf(fp,"\n Ticket fare    : %d\n Available tickets : %d",&tamil.mov_t_fare,&tamil.mov_av_tic);
+        fscanf(fp,"\n_____________________________________________________");
+
+        printf("\n\t\t\tMovie name         : %s",tamil.mov_name);
+        printf("\n\t\t\tTheater name       : %s",tamil.mov_theater);
+        printf("\n\t\t\tDate               : %s",tamil.mov_date);
+        printf("\n\t\t\tTiming             : %s",tamil.mov_time);
+        printf("\n\t\t\tTicket price       : %d",tamil.mov_t_fare);
+        printf("\n\t\t\tAvailable tickets  : %d",tamil.mov_av_tic);
+        printf("\n\t\t_____________________________________________");
+    }
+    fclose(fp);
+    printf("\n\t\t\tpress Enter to go back.....");
+    getch();
+    return 1;
 }
 
 int Events_sports_book()                                                                                  // EvenTs Page
@@ -1234,6 +1503,8 @@ int search_isl()
     scanf("%s",i_team1);
 
     if(strcmp(i_team1,"1")==0){
+        fclose(fp);
+        fclose(temp);
         return 1;
     }
     printf("\n\t\t\tEnter the team 2 name    :");
@@ -1497,7 +1768,7 @@ int admin()                                                                     
         case 1:
             loop2:
             system("cls");
-            printf("\n\t\t\t**=======ADMIN=======**\n");
+            printf("\n\t\t\t**=======ADMIN Travel=======**\n");
             printf("\n\n\t\t\t\t1.Trains ticket");
             printf("\n\t\t\t\t2.Bus ticket");
             printf("\n\t\t\t\t3.Back");
@@ -1529,9 +1800,38 @@ int admin()                                                                     
                     goto loop2;
             }
             break;
+        case 2:
+            mloop:
+            system("cls");
+            printf("\n\t\t\t**=======ADMIN Movies=======**\n");
+            printf("\n\t\t\t1. Tamil Movies");
+            printf("\n\t\t\t2. Hindi Movies");
+            printf("\n\t\t\t3. Hollywood Movies");
+            printf("\n\t\t\t4. Back");
+            printf("\n\t\t\t___________________________");
+            printf("\n\t\t\tEnter the choice :");
+            scanf("%d", &m);
+
+            if(m==4){
+                goto loop1;
+            }
+            switch(m){
+                case 1:
+                    system("cls");
+                    retval=admin_tamil_movie();
+                    if(retval==1){
+                        goto mloop;
+                    }
+                    break;
+                default:
+                    printf("\n\t\t\tPlease Enter a valid input...");
+                    getch();
+                    goto mloop;
+            }
+            break;
         case 4:
             system("cls");
-            printf("\n\t\t\t**=======ADMIN=======**\n");
+            printf("\n\t\t\t**=======ADMIN Event=======**\n");
             printf("\n\n\t\t\t\t1. Marathon");
             printf("\n\t\t\t\t2. Sports");
             printf("\n\t\t\t\t3. Concerts");
@@ -1541,17 +1841,17 @@ int admin()                                                                     
             scanf("%d",&t1);
 
             if(t1==4){
-            goto loop1;
+                goto loop1;
             }
 
             switch(t1){
-            case 2:
-                system("cls");
-                retval=admin_sports_event();
-                if(retval==1){
-                    goto loop1;
-                }
-                break;
+                case 2:
+                    system("cls");
+                    retval=admin_sports_event();
+                    if(retval==1){
+                        goto loop1;
+                    }
+                    break;
             }
             break;
         case 7:
@@ -1666,6 +1966,127 @@ int admin_train()                                                               
     return 0;
 }
 
+int delete_train()
+{
+    FILE *fp, *temp;
+    struct travel train;
+    int found = 0, c,m,num=0;
+    char itr_name[20];
+
+    loop1:
+    system("cls");
+    printf("\n\t\t\t**=======Delete Train Details=======**\n");
+    printf("\n\t1. Back");
+    printf("\n\t\t\tEnter the train name    :");
+    scanf(" %s", itr_name);
+
+    if (strcmp(itr_name, "1") == 0)
+    {
+        fclose(fp);
+        fclose(temp);
+        return 1;
+    }
+
+    fp = fopen("train_book.txt", "r");
+    temp = fopen("temp_book.txt", "w");
+
+    if (fp == NULL || temp == NULL){
+        printf("Error opening file for appending.\n");
+        getch();
+        return 0;
+    }
+
+    while (fscanf(fp,"\n Train name     :%s\n Train number   :%d\n Departure time :%s\n Arrival time   :%s",train.tp_name,&train.tp_no,train.depart_time,train.arrive_time) != EOF)
+    {
+        fscanf(fp,"\n Departure place:%s\n Arrival place  :%s\n Ticket fare    :%d\n Time duration  :%s\nAvailable tickets  :%d",train.depart_place,train.arrive_place,&train.tp_fare,train.tp_tm_dur,&train.tp_av_tic);
+        fscanf(fp,"\n_______________________________________________________________________________________");
+
+        num++;
+        if (strcmp(train.tp_name, itr_name) == 0){
+            found = 1;
+            system("cls");
+            printf("\n\t\t\t**=======Train Details to Delete=======**\n");
+            printf("\n\n\t\t\tTrain Id         : %d", num);
+            printf("\n\t\t\tTrain name        : %s Express", train.tp_name);
+            printf("\n\t\t\tTrain number      : %d", train.tp_no);
+            printf("\n\t\t\tDeparture time    : %s", train.depart_time);
+            printf("\n\t\t\tArrival time      : %s", train.arrive_time);
+            printf("\n\t\t\tDeparture place   : %s", train.depart_place);
+            printf("\n\t\t\tArrival place     : %s", train.arrive_place);
+            printf("\n\t\t\tTicket fare       : %d", train.tp_fare);
+            printf("\n\t\t\tTime duration     : %s", train.tp_tm_dur);
+            printf("\n\t\t\tAvailable tickets : %d", train.tp_av_tic);
+            printf("\n\t\t________________________________________________");
+
+            printf("\n\t\t\tAre you sure you want to delete this train?");
+            printf("\n\t\t\t1. Yes");
+            printf("\n\t\t\t2. No");
+            printf("\t\t\t3. Next");
+            printf("\n\t\t_______________________________________");
+            printf("\n\t\t\t Enter the choice  :");
+            scanf("%d", &c);
+
+            if (c == 1){
+                strcpy(itr_name,"dummy");
+                printf("\n\t\t\tTrain details deleted successfully...");
+                getch();
+            }else if(c==2){
+                strcpy(itr_name,"dummy");
+                fprintf(temp,"\n Train name     :%s\n Train number   :%d\n Departure time :%s\n Arrival time   :%s",train.tp_name,train.tp_no,train.depart_time,train.arrive_time);
+                fprintf(temp,"\n Departure place:%s\n Arrival place  :%s\n Ticket fare    :%d\n Time duration  :%s\nAvailable tickets  :%d",train.depart_place,train.arrive_place,train.tp_fare,train.tp_tm_dur,train.tp_av_tic);
+                fprintf(temp,"\n_______________________________________________________________________________________");
+            }else{
+                found=2;
+                fprintf(temp,"\n Train name     :%s\n Train number   :%d\n Departure time :%s\n Arrival time   :%s",train.tp_name,train.tp_no,train.depart_time,train.arrive_time);
+                fprintf(temp,"\n Departure place:%s\n Arrival place  :%s\n Ticket fare    :%d\n Time duration  :%s\nAvailable tickets  :%d",train.depart_place,train.arrive_place,train.tp_fare,train.tp_tm_dur,train.tp_av_tic);
+                fprintf(temp,"\n_______________________________________________________________________________________");
+            }
+        }else{
+            fprintf(temp,"\n Train name     :%s\n Train number   :%d\n Departure time :%s\n Arrival time   :%s",train.tp_name,train.tp_no,train.depart_time,train.arrive_time);
+            fprintf(temp,"\n Departure place:%s\n Arrival place  :%s\n Ticket fare    :%d\n Time duration  :%s\nAvailable tickets  :%d",train.depart_place,train.arrive_place,train.tp_fare,train.tp_tm_dur,train.tp_av_tic);
+            fprintf(temp,"\n_______________________________________________________________________________________");
+        }
+    }
+
+    if(found==0 || found==2){
+        printf("\n\t\t\tNo Train name found as %s",itr_name);
+        printf("\n\t\t_________________________________________");
+        printf("\n\t\t\t1. Search again");
+        printf("\n\t\t\t2. Back");
+        printf("\n\t\t_________________________________________");
+        printf("\n\t\t\tEnter the choice   :");
+        scanf("%d",&m);
+
+        if(m==1){
+            num=0;
+            found=0;
+            fclose(fp);
+            fclose(temp);
+            remove("train_book.txt");
+            rename("temp_book.txt","train_book.txt");
+            goto loop1;
+        }else{
+            num=0;
+            found=0;
+            fclose(fp);
+            fclose(temp);
+            remove("train_book.txt");
+            rename("temp_book.txt","train_book.txt");
+            return 1;
+        }
+    }else{
+        num=0;
+        found=0;
+        fclose(fp);
+        fclose(temp);
+        remove("train_book.txt");
+        rename("temp_book.txt","train_book.txt");
+        return 1;
+    }
+
+    return 0;
+}
+
 int admin_bus()                                                                                                   //Admin bus
 {
     int n,c;
@@ -1762,107 +2183,24 @@ int admin_bus()                                                                 
     return 0;
 }
 
-
-int delete_train()
-{
-    FILE *fp, *temp;
-    struct travel train;
-    int found = 0, c;
-    char itr_name[20];
-
-    fp = fopen("train_book.txt", "r");
-    temp = fopen("temp_book.txt", "w");
-
-    if (fp == NULL || temp == NULL)
-    {
-        printf("Error opening file for appending.\n");
-        getch();
-        return 0;
-    }
-
-    system("cls");
-    printf("\n\t\t\t**=======Delete Train Details=======**\n");
-    printf("\n\t1. Back");
-    printf("\n\t\t\tEnter the train name    :");
-    scanf(" %s", itr_name);
-
-    if (strcmp(itr_name, "1") == 0)
-    {
-        fclose(fp);
-        fclose(temp);
-        return 1;
-    }
-
-    while (fscanf(fp,"\n Train name     :%s\n Train number   :%d\n Departure time :%s\n Arrival time   :%s",train.tp_name,&train.tp_no,train.depart_time,train.arrive_time) != EOF)
-    {
-        fscanf(fp,"\n Departure place:%s\n Arrival place  :%s\n Ticket fare    :%d\n Time duration  :%s\nAvailable tickets  :%d",train.depart_place,train.arrive_place,&train.tp_fare,train.tp_tm_dur,&train.tp_av_tic);
-        fscanf(fp,"\n_______________________________________________________________________________________");
-
-        if (strcmp(train.tp_name, itr_name) == 0)
-        {
-            found = 1;
-            printf("\n\t\t\t**=======Train Details to Delete=======**\n");
-            printf("\n\n\t\t\tTrain name      : %s Express", train.tp_name);
-            printf("\n\t\t\tTrain number      : %d", train.tp_no);
-            printf("\n\t\t\tDeparture time    : %s", train.depart_time);
-            printf("\n\t\t\tArrival time      : %s", train.arrive_time);
-            printf("\n\t\t\tDeparture place   : %s", train.depart_place);
-            printf("\n\t\t\tArrival place     : %s", train.arrive_place);
-            printf("\n\t\t\tTicket fare       : %d", train.tp_fare);
-            printf("\n\t\t\tTime duration     : %s", train.tp_tm_dur);
-            printf("\n\t\t\tAvailable tickets : %d", train.tp_av_tic);
-            printf("\n\t\t________________________________________________");
-
-            printf("\n\t\t\tAre you sure you want to delete this train?");
-            printf("\n\t\t\t1. Yes");
-            printf("\n\t\t\t2. No");
-            printf("\n\t\t\t3. Enter thhe choice");
-            scanf("%d", &c);
-
-            if (c == 1)
-            {
-                printf("\n\t\t\tTrain details deleted successfully...");
-                getch();
-            }
-            else
-            {
-                fprintf(temp,"\n Train name     :%s\n Train number   :%d\n Departure time :%s\n Arrival time   :%s",train.tp_name,train.tp_no,train.depart_time,train.arrive_time);
-                fprintf(temp,"\n Departure place:%s\n Arrival place  :%s\n Ticket fare    :%d\n Time duration  :%s\nAvailable tickets  :%d",train.depart_place,train.arrive_place,train.tp_fare,train.tp_tm_dur,train.tp_av_tic);
-                fprintf(temp,"\n_______________________________________________________________________________________");
-
-
-            }
-        }
-        else
-        {
-            fprintf(temp,"\n Train name     :%s\n Train number   :%d\n Departure time :%s\n Arrival time   :%s",train.tp_name,train.tp_no,train.depart_time,train.arrive_time);
-            fprintf(temp,"\n Departure place:%s\n Arrival place  :%s\n Ticket fare    :%d\n Time duration  :%s\nAvailable tickets  :%d",train.depart_place,train.arrive_place,train.tp_fare,train.tp_tm_dur,train.tp_av_tic);
-            fprintf(temp,"\n_______________________________________________________________________________________");
-        }
-    }
-
-    fclose(fp);
-    fclose(temp);
-
-    remove("train_book.txt");
-    rename("temp_book.txt", "train_book.txt");
-
-    if (found == 0)
-    {
-        printf("\n\t\t\tTrain name %s not found", itr_name);
-        getch();
-    }
-
-    return 0;
-}
-
 int delete_bus()
 {
     FILE *fp, *temp;
     struct travel bus;
-    int found = 0, c;
+    int found = 0, c,m,num=0;
     char ibs_name[20];
 
+    loop1:
+    system("cls");
+    printf("\n\t\t\t**=======Delete bus Details=======**\n");
+    printf("\n\t1. Back");
+    printf("\n\t\t\tEnter the bus name    :");
+    scanf("%s", ibs_name);
+
+    if (strcmp(ibs_name, "1") == 0)
+    {
+        return 1;
+    }
     fp = fopen("bus_book.txt", "r");
     temp = fopen("temp_book.txt", "w");
 
@@ -1873,30 +2211,20 @@ int delete_bus()
         return 0;
     }
 
-    system("cls");
-    printf("\n\t\t\t**=======Delete bus Details=======**\n");
-    printf("\n\t1. Back");
-    printf("\n\t\t\tEnter the bus name    :");
-    scanf("%s", ibs_name);
-
-    if (strcmp(ibs_name, "1") == 0)
-    {
-        fclose(fp);
-        fclose(temp);
-        return 1;
-    }
-
     while (fscanf(fp,"\n Bus name     :%s\n Bus number   :%d\n Departure time :%s\n Arrival time   :%s",bus.tp_name,&bus.tp_no,bus.depart_time,bus.arrive_time) != EOF)
     {
         fscanf(fp,"\n Departure place:%s\n Arrival place  :%s\n Ticket fare    :%d\n Time duration  :%s\nAvailable tickets  :%d",bus.depart_place,bus.arrive_place,&bus.tp_fare,bus.tp_tm_dur,&bus.tp_av_tic);
         fscanf(fp,"\n_______________________________________________________________________________________");
 
+        num++;
         if (strcmp(bus.tp_name, ibs_name) == 0)
         {
             found = 1;
+            system("cls");
             printf("\n\t\t\t**=======Bus Details to Delete=======**\n");
-            printf("\n\n\t\t\t bus name       : %s ", bus.tp_name);
-            printf("\n\t\t\t bus number       : %d", bus.tp_no);
+            printf("\n\n\t\t\tBus Id           : %d", num);
+            printf("\n\t\t\tBus name          : %s ", bus.tp_name);
+            printf("\n\t\t\t Bus number       : %d", bus.tp_no);
             printf("\n\t\t\tDeparture time    : %s", bus.depart_time);
             printf("\n\t\t\tArrival time      : %s", bus.arrive_time);
             printf("\n\t\t\tDeparture place   : %s", bus.depart_place);
@@ -1909,16 +2237,22 @@ int delete_bus()
             printf("\n\t\t\tAre you sure you want to delete this bus?");
             printf("\n\t\t\t1. Yes");
             printf("\n\t\t\t2. No");
-            printf("\n\n\t\t\tEnter thhe choice :");
+            printf("\t\t\t3. Next");
+            printf("\n\t\t_________________________________");
+            printf("\n\n\t\t\tEnter the choice :");
             scanf("%d", &c);
 
-            if (c == 1)
-            {
+            if (c == 1){
+                strcpy(ibs_name,"dummy");
                 printf("\n\t\t\t bus details deleted successfully...");
                 getch();
-            }
-            else
-            {
+            }else if(c==2){
+                strcpy(ibs_name,"dummy");
+                fprintf(temp, "\n Bus name       :%s\n Bus number     :%d\n Departure time :%s\n Arrival time   :%s",bus.tp_name,bus.tp_no,bus.depart_time,bus.arrive_time);
+                fprintf(temp, "\n Departure place:%s\n Arrival place  :%s\n Ticket fare    :%d\n Time duration  :%s\nAvailable tickets  :%d",bus.depart_place,bus.arrive_place,bus.tp_fare,bus.tp_tm_dur,bus.tp_av_tic);
+                fprintf(temp, "\n_______________________________________________________________________________________");
+            }else{
+                found=2;
                 fprintf(temp, "\n Bus name       :%s\n Bus number     :%d\n Departure time :%s\n Arrival time   :%s",bus.tp_name,bus.tp_no,bus.depart_time,bus.arrive_time);
                 fprintf(temp, "\n Departure place:%s\n Arrival place  :%s\n Ticket fare    :%d\n Time duration  :%s\nAvailable tickets  :%d",bus.depart_place,bus.arrive_place,bus.tp_fare,bus.tp_tm_dur,bus.tp_av_tic);
                 fprintf(temp, "\n_______________________________________________________________________________________");
@@ -1931,15 +2265,40 @@ int delete_bus()
             fprintf(temp, "\n_______________________________________________________________________________________");
         }
     }
-    fclose(fp);
-    fclose(temp);
+    if(found==0 || found==2){
+        printf("\n\t\t\tNo Buses name found as %s",ibs_name);
+        printf("\n\t\t_________________________________________");
+        printf("\n\t\t\t1. Search again");
+        printf("\n\t\t\t2. Back");
+        printf("\n\t\t_________________________________________");
+        printf("\n\t\t\tEnter the choice   :");
+        scanf("%d",&m);
 
-    remove("bus_book.txt");
-    rename("temp_book.txt", "bus_book.txt");
-
-    if (found == 0)
-    {
-        printf("\n\t\t\t bus name %s not found", ibs_name);
+        if(m==1){
+            num=0;
+            found=0;
+            fclose(fp);
+            fclose(temp);
+            remove("bus_book.txt");
+            rename("temp_book.txt","bus_book.txt");
+            goto loop1;
+        }else{
+            num=0;
+            found=0;
+            fclose(fp);
+            fclose(temp);
+            remove("bus_book.txt");
+            rename("temp_book.txt","bus_book.txt");
+            return 1;
+        }
+    }else{
+        num=0;
+        found=0;
+        fclose(fp);
+        fclose(temp);
+        remove("bus_book.txt");
+        rename("temp_book.txt","bus_book.txt");
+        return 1;
     }
 
     return 0;
@@ -2079,20 +2438,21 @@ int admin_isl()
             }
             break;
         case 3:
-            fp=fopen("isl_book.txt","r");
-            temp=fopen("temp.txt","w");
-
             loop1:
             system("cls");
             printf("\n\t\t\t=====Delete ISL Matches=====\n");
             printf("\n\t\t1. Back");
             printf("\n\t\t\tEnter team 1 name    :");
             scanf("%s",i_team1);
+
             if(strcmp(i_team1,"1")==0){
                 goto hloop;
             }
             printf("\n\t\t\tEnter team 2 name    :");
             scanf("%s",i_team2);
+
+            fp=fopen("isl_book.txt","r");
+            temp=fopen("temp.txt","w");
 
             while(fscanf(fp,"\n Match  %s vs %s",isl.team1,isl.team2)!= EOF){
                 fscanf(fp,"\n Venue        : %s",isl.venue);
@@ -2102,6 +2462,8 @@ int admin_isl()
                 fscanf(fp,"\n Available Tickets  : %d",&isl.av_tic);
                 fscanf(fp,"\n_________________________________");
 
+                system("cls");
+                printf("\n\t\t\t=====Delete ISL Matches=====\n");
                  num++;
                  if ((strcmp(i_team1, isl.team1) == 0 && strcmp(i_team2, isl.team2) == 0) || (strcmp(i_team1, isl.team2) == 0 && strcmp(i_team2, isl.team1) == 0)) {
                     found=1;
@@ -2112,17 +2474,27 @@ int admin_isl()
                     printf("\n\t\t\t  Ticket fare  : %d",isl.t_fare);
                     printf("\n\t\t______________________________________\n");
 
-                    num=0;
                     printf("\n\t\t\tAre you sure want to delete....");
                     printf("\n\t\t\t1. Yes");
                     printf("\n\t\t\t2. No");
+                    printf("\t\t\t3. Next");
                     printf("\n\t\t_______________________________________");
                     printf("\n\t\t\tEnter the choice   :");
                     scanf("%d",&n);
 
                     if(n==1){
+                        strcpy(i_team1,"dummy");
                         printf("\n\t\t\t Match %s vs %s deleted successfully...",isl.team1,isl.team2);
                         getch();
+                    }else if(n==2){
+                        strcpy(i_team1,"dummy");
+                        fprintf(temp,"\n Match  %s vs %s",isl.team1,isl.team2);
+                        fprintf(temp,"\n Venue        : %s",isl.venue);
+                        fprintf(temp,"\n Date         : %s",isl.date);
+                        fprintf(temp,"\n Time         : %s",isl.time);
+                        fprintf(temp,"\n Ticket fare  : %d",isl.t_fare);
+                        fprintf(temp,"\n Available Tickets  : %d",isl.av_tic);
+                        fprintf(temp,"\n_________________________________");
                     }else{
                         fprintf(temp,"\n Match  %s vs %s",isl.team1,isl.team2);
                         fprintf(temp,"\n Venue        : %s",isl.venue);
@@ -2131,6 +2503,7 @@ int admin_isl()
                         fprintf(temp,"\n Ticket fare  : %d",isl.t_fare);
                         fprintf(temp,"\n Available Tickets  : %d",isl.av_tic);
                         fprintf(temp,"\n_________________________________");
+                        found=2;
                     }
 
                  }else{
@@ -2144,31 +2517,221 @@ int admin_isl()
                 }
             }
 
-            if(found==0){
-                num=0;
-                printf("\n\t\t\t No Matches found for %s vs %s",i_team1,i_team2);
-                printf("\n\t\t______________________________________________");
-                printf("\n\t\t\t1. Search another");
+            if(found==0 || found==2){
+                printf("\n\t\t\tNo Matches found as %s vs %s",i_team1,i_team2);
+                printf("\n\t\t_________________________________________");
+                printf("\n\t\t\t1. Search again");
                 printf("\n\t\t\t2. Back");
-                scanf("%d",&c);
-                if(c==1){
+                printf("\n\t\t_________________________________________");
+                printf("\n\t\t\tEnter the choice   :");
+                scanf("%d",&m);
+
+                if(m==1){
+                    num=0;
+                    found=0;
+                    fclose(fp);
+                    fclose(temp);
+                    remove("isl_book.txt");
+                    rename("temp.txt","isl_book.txt");
                     goto loop1;
                 }else{
+                    num=0;
+                    found=0;
+                    fclose(fp);
+                    fclose(temp);
+                    remove("isl_book.txt");
+                    rename("temp.txt","isl_book.txt");
                     goto hloop;
                 }
-                getch();
-
             }else{
+                num=0;
+                found=0;
                 fclose(fp);
                 fclose(temp);
                 remove("isl_book.txt");
                 rename("temp.txt","isl_book.txt");
-                getch();
                 goto hloop;
             }
-
+            break;
+        default:
+            printf("\n\t\t\tplease Enter a valid Input....");
+            getch();
+            goto hloop;
     }
+    return 1;
+}
 
+int admin_tamil_movie()
+{
+    struct movie tamil;
+    FILE *fp,*temp;
+    int n,m,c,found=0;
+    char i_mov_name[20];
+
+    hloop:
+    system("cls");
+    printf("\n\t\t\t=====Admin Tamil Movies=====\n");
+    printf("\n\t\t\t1. Add Movies");
+    printf("\n\t\t\t2. View Movies");
+    printf("\n\t\t\t3. Delete Movies");
+    printf("\n\t\t\t4. Back");
+    printf("\n\t\t______________________________________");
+    printf("\n\t\t\tEnter the choice   :");
+    scanf("%d",&n);
+
+    if(n==4){
+        return 1;
+    }
+    switch(n){
+        case 1:
+            loop1:
+            fp=fopen("tamil_movie.txt","a");
+
+            system("cls");
+            printf("\n\t\t\t=====Add Tamil Movies=====\n");
+            printf("\n\t\t\tMovie name   : ");
+            scanf("%s",tamil.mov_name);
+            printf("\n\t\t\tTheater name : ");
+            scanf("%s",tamil.mov_theater);
+            printf("\n\t\t\tMovie Date   : ");
+            scanf("%s",tamil.mov_date);
+            printf("\n\t\t\tMovie Time   : ");
+            scanf("%s",tamil.mov_time);
+            printf("\n\t\t\tTicket price : ");
+            scanf("%d",&tamil.mov_t_fare);
+            printf("\n\t\t\tAvailable ticket : ");
+            scanf("%d",&tamil.mov_av_tic);
+
+            fprintf(fp,"\n Movie name     : %s\n Theater name   : %s",tamil.mov_name,tamil.mov_theater);
+            fprintf(fp,"\n Date           : %s\n Time           : %s",tamil.mov_date,tamil.mov_time);
+            fprintf(fp,"\n Ticket fare    : %d\n Available tickets : %d",tamil.mov_t_fare,tamil.mov_av_tic);
+            fprintf(fp,"\n_____________________________________________________");
+            printf("\n\t\t\tMovie details added successfully....");
+            getch();
+            printf("\n\t\t\tDo you want to add another....");
+            printf("\n\t\t\t1. Yes");
+            printf("\n\t\t\t2. No");
+            printf("\n\t\t________________________________");
+            printf("\n\t\t\tEnter the choice  : ");
+            scanf("%d",&m);
+
+            if(m==1){
+                fclose(fp);
+                goto loop1;
+            }else{
+                fclose(fp);
+                goto hloop;
+            }
+            break;
+        case 2:
+            retval=view_tamil_movie();
+            if(retval==1){
+                goto hloop;
+            }
+            break;
+        case 3:
+            loop2:
+            system("cls");
+            printf("\n\t\t\t=====Delete Tamil Movies=====\n");
+            printf("\n\t\t1. Back");
+            printf("\n\t\t\tEnter name of movie   :");
+            scanf("%s",i_mov_name);
+
+            if(strcmp(i_mov_name,"1")==0){
+                goto hloop;
+            }
+            fp=fopen("tamil_movie.txt","r");
+            temp=fopen("temp.txt","w");
+
+            while(fscanf(fp,"\n Movie name     : %s\n Theater name   : %s",tamil.mov_name,tamil.mov_theater)!=EOF){
+                fscanf(fp,"\n Date           : %s\n Time           : %s",tamil.mov_date,tamil.mov_time);
+                fscanf(fp,"\n Ticket fare    : %d\n Available tickets : %d",&tamil.mov_t_fare,&tamil.mov_av_tic);
+                fscanf(fp,"\n_____________________________________________________");
+
+                system("cls");
+                printf("\n\t\t\t=====Delete Tamil Movies=====\n");
+                if(strcmp(tamil.mov_name,i_mov_name)==0){
+                    found=1;
+                    printf("\n\t\t\t**=======Tamil Movies=======**\n");
+                    printf("\n\t\t\tMovie name         : %s",tamil.mov_name);
+                    printf("\n\t\t\tTheater name       : %s",tamil.mov_theater);
+                    printf("\n\t\t\tDate               : %s",tamil.mov_date);
+                    printf("\n\t\t\tTiming             : %s",tamil.mov_time);
+                    printf("\n\t\t\tTicket price       : %d",tamil.mov_t_fare);
+                    printf("\n\t\t\tAvailable tickets  : %d",tamil.mov_av_tic);
+                    printf("\n\t\t_____________________________________________");
+
+                    printf("\n\t\t\tAre sure want to Delete movie details");
+                    printf("\n\t\t\t1. Yes");
+                    printf("\n\t\t\t2. No");
+                    printf("\t\t\t3. Next");
+                    printf("\n\t\t_____________________________________________");
+                    printf("\n\t\t\tEnter the choice   :");
+                    scanf("%d",&m);
+
+                    if(m==1){
+                        strcpy(i_mov_name,"dummy");
+                        printf("\n\t\t\tMovie deleted successfully....");
+                        getch();
+                    }else if(m==2){
+                        strcpy(i_mov_name,"dummy");
+                        fprintf(temp,"\n Movie name     : %s\n Theater name   : %s",tamil.mov_name,tamil.mov_theater);
+                        fprintf(temp,"\n Date           : %s\n Time           : %s",tamil.mov_date,tamil.mov_time);
+                        fprintf(temp,"\n Ticket fare    : %d\n Available tickets : %d",tamil.mov_t_fare,tamil.mov_av_tic);
+                        fprintf(temp,"\n_____________________________________________________");
+                    }else{
+                        found=2;
+                        fprintf(temp,"\n Movie name     : %s\n Theater name   : %s",tamil.mov_name,tamil.mov_theater);
+                        fprintf(temp,"\n Date           : %s\n Time           : %s",tamil.mov_date,tamil.mov_time);
+                        fprintf(temp,"\n Ticket fare    : %d\n Available tickets : %d",tamil.mov_t_fare,tamil.mov_av_tic);
+                        fprintf(temp,"\n_____________________________________________________");
+                    }
+                }else{
+                   fprintf(temp,"\n Movie name     : %s\n Theater name   : %s",tamil.mov_name,tamil.mov_theater);
+                   fprintf(temp,"\n Date           : %s\n Time           : %s",tamil.mov_date,tamil.mov_time);
+                   fprintf(temp,"\n Ticket fare    : %d\n Available tickets : %d",tamil.mov_t_fare,tamil.mov_av_tic);
+                   fprintf(temp,"\n_____________________________________________________");
+                }
+            }
+            if(found==0 || found==2){
+                printf("\n\t\t\tNo movie name found as %s",i_mov_name);
+                printf("\n\t\t_________________________________________");
+                printf("\n\t\t\t1. Search again");
+                printf("\n\t\t\t2. Back");
+                printf("\n\t\t_________________________________________");
+                printf("\n\t\t\tEnter the choice   :");
+                scanf("%d",&c);
+
+                if(c==1){
+                    found=0;
+                    fclose(fp);
+                    fclose(temp);
+                    remove("tamil_movie.txt");
+                    rename("temp.txt","tamil_movie.txt");
+                    goto loop2;
+                }else{
+                    found=0;
+                    fclose(fp);
+                    fclose(temp);
+                    remove("tamil_movie.txt");
+                    rename("temp.txt","tamil_movie.txt");
+                    goto hloop;
+                }
+            }else{
+                found=0;
+                fclose(fp);
+                fclose(temp);
+                remove("tamil_movie.txt");
+                rename("temp.txt","tamil_movie.txt");
+                goto hloop;
+            }
+            break;
+        default:
+            printf("\n\t\t\tPlease Enter a valid input....");
+            getch();
+            goto hloop;
+    }
     getch();
+
     return 1;
 }
