@@ -3,20 +3,15 @@
  Theater name   : w
  Date           : w
  Time           : w
- Ticket fare    : 23
- Available tickets : 65
+ Ticket fare    : 50
+ Available tickets : 153
+ seat booked  :38
 _____________________________________________________
  Movie name     : beast
- Theater name   : q
- Date           : q
- Time           : q
- Ticket fare    : 98
- Available tickets : 62
-_____________________________________________________
- Movie name     : maari
- Theater name   : tt
- Date           : t
- Time           : t
- Ticket fare    : 124
- Available tickets : 45
+ Theater name   : w
+ Date           : w
+ Time           : w
+ Ticket fare    : 200
+ Available tickets : 50
+ seat booked  :60
 _____________________________________________________

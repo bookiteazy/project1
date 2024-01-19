@@ -1,15 +1,9 @@
 
- Match  cfc vs mumbai
- Venue        : w
- Date         : w
- Time         : w
- Ticket fare  : 3
- Available Tickets  : 5
-_________________________________
- Match  gfc vs bfc
- Venue        : q
- Date         : q
- Time         : q
- Ticket fare  : 1
- Available Tickets  : 1
+ Match  cfc vs bfc
+ Venue        : ew
+ Date         : we
+ Time         : qe
+ Ticket fare  : 200
+ Available Tickets  : 32
+ Seats Booked  : 338
 _________________________________

@@ -7,7 +7,8 @@
  Arrival place  :w
  Ticket fare    :90
  Time duration  :w
-Available tickets  :296
+Available tickets  :263
+seat booked  :45
 _______________________________________________________________________________________
  Bus name     :q
  Bus number   :1
@@ -17,7 +18,8 @@ ________________________________________________________________________________
  Arrival place  :q
  Ticket fare    :540
  Time duration  :q
-Available tickets  :297
+Available tickets  :292
+seat booked  :25
 _______________________________________________________________________________________
  Bus name     :wwww
  Bus number   :2
@@ -27,5 +29,6 @@ ________________________________________________________________________________
  Arrival place  :w
  Ticket fare    :30
  Time duration  :w
-Available tickets  :136
+Available tickets  :127
+seat booked  :35
 _______________________________________________________________________________________

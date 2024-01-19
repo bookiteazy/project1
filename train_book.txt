@@ -7,7 +7,8 @@
  Arrival place  :w
  Ticket fare    :2
  Time duration  :w
-Available tickets  :47
+Available tickets  :32
+seat booked  :75
 _______________________________________________________________________________________
  Train name     :q
  Train number   :2
@@ -17,7 +18,8 @@ ________________________________________________________________________________
  Arrival place  :q
  Ticket fare    :3
  Time duration  :w
-Available tickets  :4
+Available tickets  :21
+seat booked  :80
 _______________________________________________________________________________________
  Train name     :w
  Train number   :1
@@ -27,5 +29,6 @@ ________________________________________________________________________________
  Arrival place  :w
  Ticket fare    :200
  Time duration  :w
-Available tickets  :184
+Available tickets  :145
+seat booked  :31
 _______________________________________________________________________________________
