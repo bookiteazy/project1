@@ -1,4 +1,3 @@
 username  : maj
 password  : 123
-Balance   : 5352
-______________________________
+Balance   : 5224

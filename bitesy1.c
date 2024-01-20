@@ -12,16 +12,16 @@ int update_seat_num();
 int train_tik_book(),view_trains();
 int bus_tik_book();
 int search_bus(),view_bus();
-int tamil_movie_book();
-int view_tamil_movie();
+int tamil_movie_book(),holly_movie_book();
+int view_tamil_movie(),view_holly_movie();
 int Events_sports_book();
 int search_isl(),view_isl();
 int admin();
 int admin_seat_num();
 int admin_train(),delete_train();
 int admin_bus(),delete_bus();
+int admin_tamil_movie(),admin_holly_movie();
 int admin_sports_event(),admin_isl();
-int admin_tamil_movie();
 char u_name[20],u_pwd[20];
 int retval;
 
@@ -153,6 +153,11 @@ int main()
                 switch(n){
                     case 1:
                         retval=tamil_movie_book();
+                        if(retval==1){
+                            goto mloop;
+                        }
+                    case 3:
+                        retval=holly_movie_book();
                         if(retval==1){
                             goto mloop;
                         }
@@ -1567,6 +1572,308 @@ int view_tamil_movie(int n)
     return 1;
 }
 
+int holly_movie_book()
+{
+    struct movie holly;
+    FILE *fp,*temp,*ub,*utemp;
+    int n,c,m,tickets_to_book,t_fare,found=0,num=0,next=0,u_balance,i_amt,tm_a_s[MAX_SEATS];
+    char i_mov_name[20],username[20],password[20],dum_mov[20];
+
+    hloop:
+    system("cls");
+    printf("\n\t\t\t**=======Hollywood Movies Booking=======**\n");
+    printf("\n\t\t\t1. Search movies");
+    printf("\n\t\t\t2. View movies");
+    printf("\n\t\t\t3. Back");
+    printf("\n\t\t________________________________________");
+    printf("\n\t\t\tEnter the choice  :");
+    scanf("%d", &n);
+
+    if(n==3){
+        return 1;
+    }
+    switch(n){
+        case 1:
+            loop1:
+            system("cls");
+            printf("\n\t\t\t**=======Search Hollywood Movies=======**\n");
+            printf("\n\t\t1. Back ");
+            printf("\n\t\t\tMovie name   : ");
+            scanf("%s",i_mov_name);
+
+            if(strcmp(i_mov_name,"1")==0){
+                fclose(fp);
+                fclose(temp);
+                goto hloop;
+            }
+
+            dloop:
+            strcpy(dum_mov,i_mov_name);
+            if(found==4){
+                strcpy(i_mov_name,dum_mov);
+            }
+
+            fp=fopen("holly_movie.txt","r");
+            temp=fopen("temp_book.txt","w");
+
+            if(fp==NULL || temp==NULL){
+                printf("\n\t\t\tError openning file....");
+                getch();
+                goto hloop;
+            }
+
+            system("cls");
+            printf("\n\t\t\t**=======Hollywood Movies=======**\n");
+            while(fscanf(fp,"\n Movie name     : %s\n Theater name   : %s",holly.mov_name,holly.mov_theater)!=EOF){
+                fscanf(fp,"\n Date           : %s\n Time           : %s",holly.mov_date,holly.mov_time);
+                fscanf(fp,"\n Ticket fare    : %d\n Available tickets : %d\n seat booked  :%d",&holly.mov_t_fare,&holly.mov_av_tic,&holly.seat_numbers);
+                fscanf(fp,"\n_____________________________________________________");
+
+                num++;
+                if(strcmp(i_mov_name,holly.mov_name)==0){
+                    found=1;
+                    system("cls");
+                    printf("\n\t\t\t**=======Hollywood Movies=======**\n");
+                    printf("\n\t\t%d.      Movie name         : %s",num,holly.mov_name);
+                    printf("\n\t\t\tTheater name       : %s",holly.mov_theater);
+                    printf("\n\t\t\tDate               : %s",holly.mov_date);
+                    printf("\n\t\t\tTiming             : %s",holly.mov_time);
+                    printf("\n\t\t\tTicket price       : %d",holly.mov_t_fare);
+                    printf("\n\t\t\tAvailable tickets  : %d",holly.mov_av_tic);
+                    printf("\n\t\t_____________________________________________");
+
+                    printf("\n\t\t\t1. Next");
+                    printf("\t\t\t\t3. Book this movie");
+                    printf("\n\t\t\t2. No");
+                    printf("\n\n\t\t\tEnter the choice :");
+                    scanf("%d", &c);
+
+                    if (c == 3) {
+                        ub = fopen("user.txt","r");
+                        utemp = fopen("utemp.txt","w");
+                        while (fscanf(ub, "username  : %s\npassword  : %s\n", username, password)!=EOF){
+                            fscanf(ub, "Balance   : %d",&u_balance);
+                            fscanf(ub, "\n______________________________\n");
+
+                            if(strcmp(username,u_name)==0 && strcmp(password,u_pwd)==0){
+                            loop5:
+                                system("cls");
+                                printf("\n\n\n\t\t\tEnter the number of tickets to book: ");
+                                scanf("%d", &tickets_to_book);
+
+                                if (tickets_to_book <= holly.mov_av_tic) {
+                                    t_fare=(tickets_to_book*holly.mov_t_fare);
+                                    printf("\n\t\t\t Total ticket price      : %d",t_fare);
+                                    printf("\n\t\t\tAre you sure want to book this movie...");
+                                    getch();
+
+                                    loop6:
+                                    system("cls");
+                                    printf("\n\t\t\t\t**=======Payment=======**\n");
+                                    printf("\n________________________________");
+                                    printf("\n| Total ticket price      : %d\t|",t_fare);
+                                    printf("\n|_______________________________|");
+                                    printf("\n\n\t\t\t\tEnter the amount  :");
+                                    scanf("%d", &i_amt);
+
+                                   if(i_amt<=u_balance){
+
+                                      if (i_amt == t_fare) {
+                                          system("cls");
+                                          u_balance -=i_amt;
+                                          holly.mov_av_tic -= tickets_to_book;
+
+                                          holly.seat_numbers++;
+                                          for (int i = 0; i < tickets_to_book; i++) {
+                                                tm_a_s[i] = holly.seat_numbers;
+                                                holly.seat_numbers++;
+                                          }
+                                          holly.seat_numbers--;
+                                          printf("\n\n\t\t\tMovie tickets booked successfully for %d tickets!", tickets_to_book);
+                                          printf("\n\n\t\t\t**=======Ticket details=======**\n");
+                                          printf("\n\t\t_______________________________________________________             Available Balance : %d",u_balance);
+                                          printf("\n\t\t| Name            : %s", username);
+                                          printf("\n\t\t| Movie           : %s", holly.mov_name);
+                                          printf("\n\t\t| Theater name    : %s", holly.mov_theater);
+                                          printf("\n\t\t| Tickets booked  : %d", tickets_to_book);
+                                          printf("\n\t\t| Seat Numbers    :  ");
+                                                  for (int i = 0; i < tickets_to_book; i++) {
+                                                       printf("%d , ", tm_a_s[i]);
+                                                  }
+                                          printf("\n\t\t| Date            : %s", holly.mov_date);
+                                          printf("\n\t\t| Time            : %s", holly.mov_time);
+                                          printf("\n\t\t| Total fare      : %d", t_fare);
+                                          printf("\n\t\t________________________________________________________");
+                                          printf("\n\n\t\t Enjoy Your Movie.........");
+                                          getch();
+
+                                          fprintf(utemp, "username  : %s\npassword  : %s\n", username, password);
+                                          fprintf(utemp, "Balance   : %d",u_balance);
+
+                                          fprintf(temp,"\n Movie name     : %s\n Theater name   : %s",holly.mov_name,holly.mov_theater);
+                                          fprintf(temp,"\n Date           : %s\n Time           : %s",holly.mov_date,holly.mov_time);
+                                          fprintf(temp,"\n Ticket fare    : %d\n Available tickets : %d\n seat booked  :%d",holly.mov_t_fare,holly.mov_av_tic,holly.seat_numbers);
+                                          fprintf(temp,"\n_____________________________________________________");
+                                          strcpy(i_mov_name,"dummy");
+
+                                       }else{
+                                          printf("\n\t\t\tEntered amount does not match. Please enter the correct amount %d", t_fare);
+                                          getch();
+                                          goto loop6;
+                                      }
+                                    }else{
+                                        printf("\n\t\t\tInsufficient money....   Available balance  : %d",u_balance);
+                                        getch();
+                                        goto loop5;
+                                    }
+                                }else{
+                                    printf("\n\t\t\tNot enough tickets available. Available tickets: %d", holly.mov_av_tic);
+                                    getch();
+                                    goto loop5;
+                                }
+                            }else{
+                                fprintf(utemp, "username  : %s\npassword  : %s\n", username, password);
+                                fprintf(utemp, "Balance   : %d",u_balance);
+                                fprintf(utemp, "\n______________________________\n");
+                            }
+                        }
+                        fclose(ub);
+                        fclose(utemp);
+                        remove("user.txt");
+                        rename("utemp.txt","user.txt");
+                    } else if (c == 2) {
+                            found=3;
+                            strcpy(i_mov_name,"dummy");
+                            fprintf(temp,"\n Movie name     : %s\n Theater name   : %s",holly.mov_name,holly.mov_theater);
+                            fprintf(temp,"\n Date           : %s\n Time           : %s",holly.mov_date,holly.mov_time);
+                            fprintf(temp,"\n Ticket fare    : %d\n Available tickets : %d\n seat booked  :%d",holly.mov_t_fare,holly.mov_av_tic,holly.seat_numbers);
+                            fprintf(temp,"\n_____________________________________________________");
+                    }else{
+                        found=2;
+                        next=1;
+                        fprintf(temp,"\n Movie name     : %s\n Theater name   : %s",holly.mov_name,holly.mov_theater);
+                        fprintf(temp,"\n Date           : %s\n Time           : %s",holly.mov_date,holly.mov_time);
+                        fprintf(temp,"\n Ticket fare    : %d\n Available tickets : %d\n seat booked  :%d",holly.mov_t_fare,holly.mov_av_tic,holly.seat_numbers);
+                        fprintf(temp,"\n_____________________________________________________");
+                    }
+
+                }else{
+                   fprintf(temp,"\n Movie name     : %s\n Theater name   : %s",holly.mov_name,holly.mov_theater);
+                   fprintf(temp,"\n Date           : %s\n Time           : %s",holly.mov_date,holly.mov_time);
+                   fprintf(temp,"\n Ticket fare    : %d\n Available tickets : %d\n seat booked  :%d",holly.mov_t_fare,holly.mov_av_tic,holly.seat_numbers);
+                   fprintf(temp,"\n_____________________________________________________");
+                }
+            }
+            if(found==0 || found==2){
+                if(next==1){
+                    printf("\n\t\t\tNo Movies Available Next as %s ",dum_mov);
+                    printf("\n\t\t_________________________________________");
+                    printf("\n\t\t\t1. Search again");
+                    printf("\t\t3. Previuos");
+                    printf("\n\t\t\t2. Back");
+                    printf("\n\t\t_________________________________________");
+                    printf("\n\t\t\tEnter the choice   :");
+                    scanf("%d",&m);
+
+                    if(m==3){
+                        num=0;
+                        found=4;
+                        fclose(fp);
+                        fclose(temp);
+                        remove("holly_movie.txt");
+                        rename("temp_book.txt","holly_movie.txt");
+                        goto dloop;
+                    }
+                }else{
+                    printf("\n\t\t\tNo Movies found as %s ",i_mov_name);
+                    printf("\n\t\t_________________________________________");
+                    printf("\n\t\t\t1. Search again");
+                    printf("\n\t\t\t2. Back");
+                    printf("\n\t\t_________________________________________");
+                    printf("\n\t\t\tEnter the choice   :");
+                    scanf("%d",&m);
+                }
+
+                if(m==1){
+                    num=0;
+                    found=0;
+                    fclose(fp);
+                    fclose(temp);
+                    remove("holly_movie.txt");
+                    rename("temp_book.txt","holly_movie.txt");
+                    goto loop1;
+                }else{
+                    num=0;
+                    found=0;
+                    fclose(fp);
+                    fclose(temp);
+                    remove("holly_movie.txt");
+                    rename("temp_book.txt","holly_movie.txt");
+                    goto hloop;
+                }
+            }else if(found==3){
+                printf("\n\t\t\tBooking cancelled......");
+                getch();
+                num=0;
+                found=0;
+                fclose(fp);
+                fclose(temp);
+                remove("holly_movie.txt");
+                rename("temp_book.txt","holly_movie.txt");
+                goto hloop;
+            }else{
+                num=0;
+                found=0;
+                fclose(fp);
+                fclose(temp);
+                remove("holly_movie.txt");
+                rename("temp_book.txt","holly_movie.txt");
+                goto hloop;
+            }
+            break;
+        case 2:
+            retval=view_holly_movie(1);
+            if(retval==1){
+                goto hloop;
+            }
+        default:
+            printf("\n\t\t\tplease Enter a valid input...");
+            getch();
+            goto hloop;
+    }
+    return 1;
+}
+
+int view_holly_movie(int n)
+{
+    struct movie holly;
+    FILE *fp;
+    fp=fopen("holly_movie.txt","r");
+
+    system("cls");
+    printf("\n\t\t\t**=======Hollywood Movies=======**\n");
+    while(fscanf(fp,"\n Movie name     : %s\n Theater name   : %s",holly.mov_name,holly.mov_theater)!=EOF){
+        fscanf(fp,"\n Date           : %s\n Time           : %s",holly.mov_date,holly.mov_time);
+        fscanf(fp,"\n Ticket fare    : %d\n Available tickets : %d\n seat booked  :%d",&holly.mov_t_fare,&holly.mov_av_tic,&holly.seat_numbers);
+        fscanf(fp,"\n_____________________________________________________");
+
+        printf("\n\t\t\tMovie name         : %s",holly.mov_name);
+        printf("\n\t\t\tTheater name       : %s",holly.mov_theater);
+        printf("\n\t\t\tDate               : %s",holly.mov_date);
+        printf("\n\t\t\tTiming             : %s",holly.mov_time);
+        printf("\n\t\t\tTicket price       : %d",holly.mov_t_fare);
+        printf("\n\t\t\tAvailable tickets  : %d",holly.mov_av_tic);
+        if(n==2){
+        printf("\n\t\t\tSeats Booked      : %d", holly.seat_numbers);
+        }
+        printf("\n\t\t_____________________________________________");
+    }
+    fclose(fp);
+    printf("\n\t\t\tpress Enter to go back.....");
+    getch();
+    return 1;
+}
+
 int Events_sports_book()                                                                                  // EvenTs Page
 {
     int n,m,num=1,found=0;
@@ -2002,6 +2309,23 @@ int admin()                                                                     
                 case 1:
                     system("cls");
                     retval=admin_tamil_movie();
+                    if(retval==1){
+                        goto mloop;
+                    }
+                    break;
+                case 2:
+                    system("cls");
+                    printf("\t\t\t\tNo Data Added........");
+                    getch();
+                    goto mloop;
+                    //retval=admin_hindi_movie();
+                    if(retval==1){
+                        goto mloop;
+                    }
+                    break;
+                case 3:
+                    system("cls");
+                    retval=admin_holly_movie();
                     if(retval==1){
                         goto mloop;
                     }
@@ -2687,6 +3011,182 @@ int admin_tamil_movie()
     return 1;
 }
 
+int admin_holly_movie()
+{
+    struct movie holly;
+    FILE *fp,*temp;
+    int n,m,c,found=0;
+    char i_mov_name[20];
+
+    hloop:
+    system("cls");
+    printf("\n\t\t\t=====Admin Hollywood Movies=====\n");
+    printf("\n\t\t\t1. Add Movies");
+    printf("\n\t\t\t2. View Movies");
+    printf("\n\t\t\t3. Delete Movies");
+    printf("\n\t\t\t4. Back");
+    printf("\n\t\t______________________________________");
+    printf("\n\t\t\tEnter the choice   :");
+    scanf("%d",&n);
+
+    if(n==4){
+        return 1;
+    }
+    switch(n){
+        case 1:
+            loop1:
+            fp=fopen("holly_movie.txt","a");
+
+            system("cls");
+            printf("\n\t\t\t=====Add Hollywood Movies=====\n");
+            printf("\n\t\t\tMovie name   : ");
+            scanf("%s",holly.mov_name);
+            printf("\n\t\t\tTheater name : ");
+            scanf("%s",holly.mov_theater);
+            printf("\n\t\t\tMovie Date   : ");
+            scanf("%s",holly.mov_date);
+            printf("\n\t\t\tMovie Time   : ");
+            scanf("%s",holly.mov_time);
+            printf("\n\t\t\tTicket price : ");
+            scanf("%d",&holly.mov_t_fare);
+            printf("\n\t\t\tAvailable ticket : ");
+            scanf("%d",&holly.mov_av_tic);
+            printf("\n\t\t\tSeats Booked : ");
+            scanf("%d",&holly.seat_numbers);
+
+            fprintf(fp,"\n Movie name     : %s\n Theater name   : %s",holly.mov_name,holly.mov_theater);
+            fprintf(fp,"\n Date           : %s\n Time           : %s",holly.mov_date,holly.mov_time);
+            fprintf(fp,"\n Ticket fare    : %d\n Available tickets : %d\n seat booked  :%d",holly.mov_t_fare,holly.mov_av_tic,holly.seat_numbers);
+            fprintf(fp,"\n_____________________________________________________");
+            printf("\n\t\t\tMovie details added successfully....");
+            getch();
+            printf("\n\t\t\tDo you want to add another....");
+            printf("\n\t\t\t1. Yes");
+            printf("\n\t\t\t2. No");
+            printf("\n\t\t________________________________");
+            printf("\n\t\t\tEnter the choice  : ");
+            scanf("%d",&m);
+
+            if(m==1){
+                fclose(fp);
+                goto loop1;
+            }else{
+                fclose(fp);
+                goto hloop;
+            }
+            break;
+        case 2:
+            retval=view_holly_movie(2);
+            if(retval==1){
+                goto hloop;
+            }
+            break;
+        case 3:
+            loop2:
+            system("cls");
+            printf("\n\t\t\t=====Delete Hollywood Movies=====\n");
+            printf("\n\t\t1. Back");
+            printf("\n\t\t\tEnter name of movie   :");
+            scanf("%s",i_mov_name);
+
+            if(strcmp(i_mov_name,"1")==0){
+                goto hloop;
+            }
+            fp=fopen("holly_movie.txt","r");
+            temp=fopen("temp.txt","w");
+
+            while(fscanf(fp,"\n Movie name     : %s\n Theater name   : %s",holly.mov_name,holly.mov_theater)!=EOF){
+                fscanf(fp,"\n Date           : %s\n Time           : %s",holly.mov_date,holly.mov_time);
+                fscanf(fp,"\n Ticket fare    : %d\n Available tickets : %d\n seat booked  :%d",&holly.mov_t_fare,&holly.mov_av_tic,&holly.seat_numbers);
+                fscanf(fp,"\n_____________________________________________________");
+
+                system("cls");
+                printf("\n\t\t\t=====Delete Hollywod Movies=====\n");
+                if(strcmp(holly.mov_name,i_mov_name)==0){
+                    found=1;
+                    printf("\n\t\t\t**=======Hollywood Movies=======**\n");
+                    printf("\n\t\t\tMovie name         : %s",holly.mov_name);
+                    printf("\n\t\t\tTheater name       : %s",holly.mov_theater);
+                    printf("\n\t\t\tDate               : %s",holly.mov_date);
+                    printf("\n\t\t\tTiming             : %s",holly.mov_time);
+                    printf("\n\t\t\tTicket price       : %d",holly.mov_t_fare);
+                    printf("\n\t\t\tAvailable tickets  : %d",holly.mov_av_tic);
+                    printf("\n\t\t_____________________________________________");
+
+                    printf("\n\t\t\tAre sure want to Delete movie details");
+                    printf("\n\t\t\t1. Yes");
+                    printf("\n\t\t\t2. No");
+                    printf("\t\t\t3. Next");
+                    printf("\n\t\t_____________________________________________");
+                    printf("\n\t\t\tEnter the choice   :");
+                    scanf("%d",&m);
+
+                    if(m==1){
+                        strcpy(i_mov_name,"dummy");
+                        printf("\n\t\t\tMovie deleted successfully....");
+                        getch();
+                    }else if(m==2){
+                        strcpy(i_mov_name,"dummy");
+                        fprintf(temp,"\n Movie name     : %s\n Theater name   : %s",holly.mov_name,holly.mov_theater);
+                        fprintf(temp,"\n Date           : %s\n Time           : %s",holly.mov_date,holly.mov_time);
+                        fprintf(temp,"\n Ticket fare    : %d\n Available tickets : %d\n seat booked  :%d",holly.mov_t_fare,holly.mov_av_tic,holly.seat_numbers);
+                        fprintf(temp,"\n_____________________________________________________");
+                    }else{
+                        found=2;
+                        fprintf(temp,"\n Movie name     : %s\n Theater name   : %s",holly.mov_name,holly.mov_theater);
+                        fprintf(temp,"\n Date           : %s\n Time           : %s",holly.mov_date,holly.mov_time);
+                        fprintf(temp,"\n Ticket fare    : %d\n Available tickets : %d\n seat booked  :%d",holly.mov_t_fare,holly.mov_av_tic,holly.seat_numbers);
+                        fprintf(temp,"\n_____________________________________________________");
+                    }
+                }else{
+                   fprintf(temp,"\n Movie name     : %s\n Theater name   : %s",holly.mov_name,holly.mov_theater);
+                   fprintf(temp,"\n Date           : %s\n Time           : %s",holly.mov_date,holly.mov_time);
+                   fprintf(temp,"\n Ticket fare    : %d\n Available tickets : %d\n seat booked  :%d",holly.mov_t_fare,holly.mov_av_tic,holly.seat_numbers);
+                   fprintf(temp,"\n_____________________________________________________");
+                }
+            }
+            if(found==0 || found==2){
+                printf("\n\t\t\tNo movie name found as %s",i_mov_name);
+                printf("\n\t\t_________________________________________");
+                printf("\n\t\t\t1. Search again");
+                printf("\n\t\t\t2. Back");
+                printf("\n\t\t_________________________________________");
+                printf("\n\t\t\tEnter the choice   :");
+                scanf("%d",&c);
+
+                if(c==1){
+                    found=0;
+                    fclose(fp);
+                    fclose(temp);
+                    remove("holly_movie.txt");
+                    rename("temp.txt","holly_movie.txt");
+                    goto loop2;
+                }else{
+                    found=0;
+                    fclose(fp);
+                    fclose(temp);
+                    remove("holly_movie.txt");
+                    rename("temp.txt","holly_movie.txt");
+                    goto hloop;
+                }
+            }else{
+                found=0;
+                fclose(fp);
+                fclose(temp);
+                remove("holly_movie.txt");
+                rename("temp.txt","holly_movie.txt");
+                goto hloop;
+            }
+            break;
+        default:
+            printf("\n\t\t\tPlease Enter a valid input....");
+            getch();
+            goto hloop;
+    }
+    getch();
+
+    return 1;
+}
 
 int admin_sports_event()
 {
