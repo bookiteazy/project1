@@ -11,7 +11,11 @@ struct travel
 {
     char tp_name[20],depart_time[10],arrive_time[10],depart_place[20],arrive_place[20];
     char tp_tm_dur[15];
+<<<<<<< HEAD
     int tp_no,tp_av_tic,tp_fare,seat_numbers,sc_fare,sc_;
+=======
+    int tp_no,tp_av_tic,tp_fare,seat_numbers;
+>>>>>>> d617f69685dc262cd5edb4b75f95c78b0af99e3f
 };
 
 int load_user_balance(int i_amt,int t_fare,int s_fare)
@@ -91,7 +95,11 @@ int load_user_balance(int i_amt,int t_fare,int s_fare)
 
 int user_history(char source[20],int ub_tic, int u_pay)
 {
+<<<<<<< HEAD
     char username[20],password[20],i_src[20],;
+=======
+    char username[20],password[20],i_src[20];
+>>>>>>> d617f69685dc262cd5edb4b75f95c78b0af99e3f
     int u_balance,sc_tic,sc_fare;
     FILE *fp,*temp;
     fp = fopen("user.txt","r");
@@ -294,7 +302,10 @@ int main()                                                                      
                                             train.depart_place, train.arrive_place, train.tp_fare, train.tp_tm_dur, train.tp_av_tic,train.seat_numbers);
                                             fprintf(temp, "\n_______________________________________________________________________________________");
                                             strcpy(itr_dep,"dummy");
+<<<<<<< HEAD
 
+=======
+>>>>>>> d617f69685dc262cd5edb4b75f95c78b0af99e3f
                                             user_history("Bus",tickets_to_book,t_fare);
 
                                         }else{
