@@ -1,0 +1,34 @@
+
+ Bus name     :w
+ Bus number   :2
+ Departure time :w
+ Arrival time   :w
+ Departure place:w
+ Arrival place  :w
+ Ticket fare    :90
+ Time duration  :w
+Available tickets  :239
+seat booked  :24
+_______________________________________________________________________________________
+ Bus name     :q
+ Bus number   :1
+ Departure time :q
+ Arrival time   :q
+ Departure place:q
+ Arrival place  :q
+ Ticket fare    :540
+ Time duration  :q
+Available tickets  :292
+seat booked  :25
+_______________________________________________________________________________________
+ Bus name     :wwww
+ Bus number   :2
+ Departure time :w
+ Arrival time   :w
+ Departure place:w
+ Arrival place  :w
+ Ticket fare    :30
+ Time duration  :w
+Available tickets  :127
+seat booked  :35
+_______________________________________________________________________________________

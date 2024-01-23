@@ -1,0 +1,45 @@
+
+ Train name     :w
+ Train number   :1
+ Departure time :w
+ Arrival time   :w
+ Departure place:w
+ Arrival place  :w
+ Ticket fare    :20
+ Time duration  :w
+Available tickets  :7
+seat booked  :200
+_______________________________________________________________________________________
+ Train name     :q
+ Train number   :2
+ Departure time :w
+ Arrival time   :w
+ Departure place:q
+ Arrival place  :q
+ Ticket fare    :30
+ Time duration  :w
+Available tickets  :116
+seat booked  :111
+_______________________________________________________________________________________
+ Train name     :w
+ Train number   :1
+ Departure time :w
+ Arrival time   :w
+ Departure place:w
+ Arrival place  :w
+ Ticket fare    :200
+ Time duration  :w
+Available tickets  :140
+seat booked  :36
+_______________________________________________________________________________________
+ Train name     :w
+ Train number   :1
+ Departure time :w
+ Arrival time   :w
+ Departure place:w
+ Arrival place  :w
+ Ticket fare    :200
+ Time duration  :w
+Available tickets  :140
+seat booked  :36
+_______________________________________________________________________________________

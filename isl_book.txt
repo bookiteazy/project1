@@ -1,0 +1,9 @@
+
+ Match  cfc vs bfc
+ Venue        : ew
+ Date         : we
+ Time         : qe
+ Ticket fare  : 200
+ Available Tickets  : 20
+ Seats Booked  : 350
+_________________________________

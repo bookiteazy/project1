@@ -1,0 +1,17 @@
+
+ Movie name     : w
+ Theater name   : w
+ Date           : q
+ Time           : we
+ Ticket fare    : 32
+ Available tickets : 44
+ seat booked  :76
+_____________________________________________________
+ Movie name     : wq
+ Theater name   : 3
+ Date           : ed
+ Time           : 3
+ Ticket fare    : 30
+ Available tickets : 43
+ seat booked  :2
+_____________________________________________________

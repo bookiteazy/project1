@@ -1,0 +1,15 @@
+
+ username  : maj
+ password  : 123
+ Balance   : 2719
+ book history   : Bus
+ Total tickets  : 5
+ Total fare     : 450
+______________________________
+ username  : hus
+ password  : 321
+ Balance   : 5220
+ book history   : Train
+ Total tickets  : 4
+ Total fare     : 80
+______________________________
