@@ -1,3 +1,8 @@
-username  : maj
-password  : 123
-Balance   : 5224
+
+ username  : maj
+ password  : Balance   : 6421724
+ Balance   : 6421804
+ Train Ticket : Booked
+ Total tickets : 4
+ Payment       : 80
+______________________________

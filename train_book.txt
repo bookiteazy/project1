@@ -5,10 +5,10 @@
  Arrival time   :w
  Departure place:w
  Arrival place  :w
- Ticket fare    :2
+ Ticket fare    :20
  Time duration  :w
-Available tickets  :32
-seat booked  :75
+Available tickets  :31
+seat booked  :176
 _______________________________________________________________________________________
  Train name     :q
  Train number   :2
@@ -16,10 +16,10 @@ ________________________________________________________________________________
  Arrival time   :w
  Departure place:q
  Arrival place  :q
- Ticket fare    :3
+ Ticket fare    :30
  Time duration  :w
-Available tickets  :21
-seat booked  :80
+Available tickets  :129
+seat booked  :98
 _______________________________________________________________________________________
  Train name     :w
  Train number   :1
@@ -29,6 +29,17 @@ ________________________________________________________________________________
  Arrival place  :w
  Ticket fare    :200
  Time duration  :w
-Available tickets  :145
-seat booked  :31
+Available tickets  :140
+seat booked  :36
+_______________________________________________________________________________________
+ Train name     :w
+ Train number   :1
+ Departure time :w
+ Arrival time   :w
+ Departure place:w
+ Arrival place  :w
+ Ticket fare    :200
+ Time duration  :w
+Available tickets  :140
+seat booked  :36
 _______________________________________________________________________________________

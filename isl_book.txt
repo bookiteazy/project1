@@ -4,6 +4,6 @@
  Date         : we
  Time         : qe
  Ticket fare  : 200
- Available Tickets  : 32
- Seats Booked  : 338
+ Available Tickets  : 25
+ Seats Booked  : 345
 _________________________________
