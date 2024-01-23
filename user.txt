@@ -8,7 +8,7 @@
 ______________________________
  username  : hus
  password  : 321
- Balance   : 5220
+ Balance   : 4000
  book history   : Train
  Total tickets  : 5
  Total fare     : 80
