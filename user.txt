@@ -1,7 +1,7 @@
 
  username  : maj
  password  : 123
- Balance   : 3000
+ Balance   : 5000
  book history   : Bus
  Total tickets  : 5
  Total fare     : 450
