@@ -10,6 +10,6 @@ ______________________________
  password  : 321
  Balance   : 5220
  book history   : Train
- Total tickets  : 4
+ Total tickets  : 5
  Total fare     : 80
 ______________________________
