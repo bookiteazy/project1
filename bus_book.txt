@@ -7,8 +7,8 @@
  Arrival place  :w
  Ticket fare    :90
  Time duration  :w
-Available tickets  :244
-seat booked  :19
+Available tickets  :239
+seat booked  :24
 _______________________________________________________________________________________
  Bus name     :q
  Bus number   :1

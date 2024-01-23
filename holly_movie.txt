@@ -4,8 +4,8 @@
  Date           : q
  Time           : we
  Ticket fare    : 32
- Available tickets : 47
- seat booked  :73
+ Available tickets : 44
+ seat booked  :76
 _____________________________________________________
  Movie name     : wq
  Theater name   : 3

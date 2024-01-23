@@ -20,8 +20,8 @@ _____________________________________________________
  Date           : w3w
  Time           : 3e
  Ticket fare    : 43
- Available tickets : 73
- seat booked  :7
+ Available tickets : 68
+ seat booked  :12
 _____________________________________________________
  Movie name     : qw
  Theater name   : we
