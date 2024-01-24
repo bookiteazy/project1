@@ -16,13 +16,14 @@ int search_bus(),view_bus();
 int tamil_movie_book(),holly_movie_book();
 int view_tamil_movie(),view_holly_movie();
 int Events_sports_book();
-int search_isl(),view_isl();
+int search_isl(),search_ipl();
+int view_isl(),view_ipl();
 int admin();
 int admin_seat_num();
 int admin_train(),delete_train();
 int admin_bus(),delete_bus();
 int admin_tamil_movie(),admin_holly_movie();
-int admin_sports_event(),admin_isl();
+int admin_sports_event(),admin_isl(),admin_ipl();
 char u_name[20],u_pwd[20];
 int retval;
 
@@ -49,14 +50,14 @@ void setColor(int textColor, int bgColor) {
 
 int main()
 {                                                                                                         //Main function
-    int ch,u,n,m,e;
+    int ch,u,n,m;
 
     loop:
         system("cls");
         setColor(12,15);
         printf("\n\n\n\n\t\t\t\t**=========Bookiteazy========**\n");
         setColor(15, 0);
-        printf("\n\n\t\t\t\t\t1 .LOGIN                    4. Exit");
+        printf("\n\n\t\t\t\t\t1 .LOGIN");
         printf("\n\t\t\t\t\t2. Create account");
         printf("\n\t\t\t\t\t3. Admin login");
         printf("\n\t\t\t\t_____________________________");
@@ -88,19 +89,6 @@ int main()
                         goto loop;
                     }
                 }else if(retval==2){
-                    goto loop;
-                }
-            case 4:
-                system("cls");
-                printf("\n\n\n\t\t\tAre sure want to Exit App....");
-                printf("\n\n\t\t\t1. Yes");
-                printf("\n\n\t\t\t2. No");
-                printf("\n\t\t___________________________________________");
-                printf("\n\t\t\tEnter the choice   :");
-                scanf("%d",&e);
-                if(e==1){
-                    goto exitloop;
-                }else{
                     goto loop;
                 }
             default:
@@ -308,11 +296,6 @@ int main()
         }
 
 
-    exitloop:
-        system("cls");
-        setColor(2,0);
-        printf("\n\n\n\n\n\t\t\t\t Thank you come again!");
-        setColor(15,0);
     getch();
     return 0;
 }
@@ -826,8 +809,6 @@ int user_history(char source[20],int ub_tic, int u_pay)
     fp = fopen("user.txt","r");
     temp = fopen("us.txt","w");
 
-    printf("%s",source);
-    getch();
     while (fscanf(fp, "\n username  : %s\n password  : %s", username, password)!=EOF){
         fscanf(fp, "\n Balance   : %d",&u_balance);
         fscanf(fp, "\n book history   : %s",i_src);
@@ -1518,7 +1499,7 @@ int tamil_movie_book()
 
     hloop:
     system("cls");
-    printf("\n\t\t**=======Tamil Movies Booking=======**\n");
+    printf("\n\t\t\t**=======Tamil Movies Booking=======**\n");
     printf("\n\t\t\t1. Search movies");
     printf("\n\t\t\t2. View movies");
     printf("\n\t\t\t3. Back");
@@ -1560,7 +1541,7 @@ int tamil_movie_book()
             }
 
             system("cls");
-            printf("\n\t\t**=======Tamil Movies=======**\n");
+            printf("\n\t\t\t**=======Tamil Movies=======**\n");
             while(fscanf(fp,"\n Movie name     : %s\n Theater name   : %s",tamil.mov_name,tamil.mov_theater)!=EOF){
                 fscanf(fp,"\n Date           : %s\n Time           : %s",tamil.mov_date,tamil.mov_time);
                 fscanf(fp,"\n Ticket fare    : %d\n Available tickets : %d\n seat booked  :%d",&tamil.mov_t_fare,&tamil.mov_av_tic,&tamil.seat_numbers);
@@ -1770,7 +1751,7 @@ int view_tamil_movie(int n)
     fp=fopen("tamil_movie.txt","r");
 
     system("cls");
-    printf("\n\t\t**=======Tamil Movies=======**\n");
+    printf("\n\t\t\t**=======Tamil Movies=======**\n");
     while(fscanf(fp,"\n Movie name     : %s\n Theater name   : %s",tamil.mov_name,tamil.mov_theater)!=EOF){
         fscanf(fp,"\n Date           : %s\n Time           : %s",tamil.mov_date,tamil.mov_time);
         fscanf(fp,"\n Ticket fare    : %d\n Available tickets : %d\n seat booked  :%d",&tamil.mov_t_fare,&tamil.mov_av_tic,&tamil.seat_numbers);
@@ -1802,7 +1783,7 @@ int holly_movie_book()
 
     hloop:
     system("cls");
-    printf("\n\t\t**=======Hollywood Movies Booking=======**\n");
+    printf("\n\t\t\t**=======Hollywood Movies Booking=======**\n");
     printf("\n\t\t\t1. Search movies");
     printf("\n\t\t\t2. View movies");
     printf("\n\t\t\t3. Back");
@@ -1855,7 +1836,7 @@ int holly_movie_book()
                     found=1;
                     loop7:
                     system("cls");
-                    printf("\n\t\t**=======Hollywood Movies=======**\n");
+                    printf("\n\t\t\t**=======Hollywood Movies=======**\n");
                     printf("\n\t\t%d.      Movie name         : %s",num,holly.mov_name);
                     printf("\n\t\t\tTheater name       : %s",holly.mov_theater);
                     printf("\n\t\t\tDate               : %s",holly.mov_date);
@@ -2053,7 +2034,7 @@ int view_holly_movie(int n)
     fp=fopen("holly_movie.txt","r");
 
     system("cls");
-    printf("\n\t\t**=======Hollywood Movies=======**\n");
+    printf("\n\t\t\t**=======Hollywood Movies=======**\n");
     while(fscanf(fp,"\n Movie name     : %s\n Theater name   : %s",holly.mov_name,holly.mov_theater)!=EOF){
         fscanf(fp,"\n Date           : %s\n Time           : %s",holly.mov_date,holly.mov_time);
         fscanf(fp,"\n Ticket fare    : %d\n Available tickets : %d\n seat booked  :%d",&holly.mov_t_fare,&holly.mov_av_tic,&holly.seat_numbers);
@@ -2124,22 +2105,77 @@ int Events_sports_book()                                                        
                     }
                     break;
                 case 2:
-                    //retval=search_premier();
-                    if(retval==1){
-                        goto loop1;
-                    }
+                    printf("\n\t\t\tNo information....");
+                    getch();
+                    goto loop1;
                     break;
                 case 22:
-                    //retval=view_premier();
-                    if(retval==1){
-                        goto loop1;
-                    }
+                    printf("\n\t\t\tNo information....");
+                    getch();
+                    goto loop1;
                     break;
                 default:
                     printf("\n\t\t\tPlease Enter a valid input...");
                     getch();
                     goto loop1;
             }
+            break;
+        case 2:
+            loop2:
+            system("cls");
+            printf("\n\t\t\t**=======Sports Events=======**\n");
+            printf("\n\t\t\t1. IPL league                   11. View Matches");
+            printf("\n\t\t\t2. BBL league                   22. View Matches");
+            printf("\n\t\t\t2. ICC Matches                  33. View Matches");
+            printf("\n\t\t\t4. Back");
+            printf("\n\t\t\t__________________________");
+            printf("\n\t\t\tEnter the choice   :");
+            scanf("%d",&m);
+            if(m==4){
+                goto hloop;
+            }
+
+            switch(m){
+                case 1:
+                    retval=search_ipl();
+                    goto loop2;
+                    break;
+                case 11:
+                    retval=view_ipl(1);
+                    goto loop2;
+                    break;
+                case 2:
+                    printf("\n\t\t\tNo information....");
+                    getch();
+                    goto loop2;
+                    break;
+                case 22:
+                    system("cls");
+                    printf("\n\t\t\tNo information....");
+                    getch();
+                    goto loop2;
+                    break;
+                case 3:
+                    printf("\n\t\t\tNo information....");
+                    getch();
+                    goto loop2;
+                    break;
+                case 33:
+                    printf("\n\t\t\tNo information....");
+                    getch();
+                    goto loop2;
+                    break;
+                default:
+                    printf("\n\t\t\tPlease Enter a valid input...");
+                    getch();
+                    goto loop2;
+            }
+            break;
+        case 3:
+            system("cls");
+            printf("\n\t\t\tNo information....");
+            getch();
+            goto hloop;
             break;
         case 4:
             return 1;
@@ -2398,6 +2434,255 @@ int view_isl(int n)                                                             
     return 1;
 }
 
+int search_ipl()
+{
+    struct sports ipl;
+    char i_team1[20],i_team2[20];
+    int n,c,tic_book,found=0,num=0,tot_fare,i_amt,i_a_s[MAX_SEATS];
+    FILE *fp,*temp;
+
+    hloop:
+    fp=fopen("ipl_book.txt","r");
+    temp=fopen("temp_book.txt","w");
+
+    if(fp==NULL || temp == NULL){
+        printf("error openning file...");
+        getch();
+        return 1;
+    }
+    system("cls");
+    printf("\n\t\t\t**======Search Matches=====**\n");
+    printf("\n\t\t1. Back");
+    printf("\n\t\t\tEnter the team 1 name    :");
+    scanf("%s",i_team1);
+
+    if(strcmp(i_team1,"1")==0){
+        fclose(fp);
+        fclose(temp);
+        return 1;
+    }
+    printf("\n\t\t\tEnter the team 2 name    :");
+    scanf("%s",i_team2);
+    if(strcmp(i_team2,"1")==0){
+        return 1;
+    }
+
+    system("cls");
+    printf("\n\t\t\t**====Match Details====**\n");
+    while(fscanf(fp,"\n Match  %s vs %s",ipl.team1,ipl.team2)!=EOF){
+        fscanf(fp,"\n Venue        : %s",ipl.venue);
+        fscanf(fp,"\n Date         : %s",ipl.date);
+        fscanf(fp,"\n Time         : %s",ipl.time);
+        fscanf(fp,"\n Ticket fare  : %d",&ipl.t_fare);
+        fscanf(fp,"\n Available Tickets  : %d\n Seats Booked  : %d",&ipl.av_tic,&ipl.seat_numbers);
+        fscanf(fp,"\n_________________________________");
+
+        num++;
+        if(strcmp(i_team1,ipl.team1)==0 && strcmp(i_team2,ipl.team2)==0 || strcmp(i_team1,ipl.team2)==0 && strcmp(i_team2,ipl.team1)==0){
+            found=1;
+            loop7:
+            system("cls");
+            printf("\n\t\t%d.        Match   %s vs %s",num,ipl.team1,ipl.team2);
+            printf("\n\t\t\t  Venue            : %s stadium",ipl.venue);
+            printf("\n\t\t\t  Date             : %s",ipl.date);
+            printf("\n\t\t\t  Time             : %s",ipl.time);
+            printf("\n\t\t\t  Ticket fare      : %d",ipl.t_fare);
+            printf("\n\t\t\t Available Tickets : %d",ipl.av_tic);
+            printf("\n\t\t______________________________________");
+
+            printf("\n\t\t\tAre sure want to book this Match....");
+            printf("\n\t\t\t1. Yes");
+            printf("\n\t\t\t2. No");
+            printf("\n\t\t____________________________________");
+            printf("\n\t\t\tEnter the choice   :");
+            scanf("%d",&n);
+
+            if(n==1){
+                loop1:
+                system("cls");
+                printf("\n\t\t\t**====Match Ticket Booking====**\n");
+                printf("\n\t\t\tEnter the number of Tickets   :");
+                scanf("%d",&tic_book);
+
+                    if(tic_book<=ipl.av_tic){
+                        tot_fare=(tic_book*ipl.t_fare);
+                        printf("\n\n\t\t\tTotal Fare   : %d\n",tot_fare);
+                        printf("\n\t\t\t1. Proceed to payment");
+                        printf("\n\t\t\t2. Cancel Booking");
+                        printf("\n\t\t____________________________________");
+                        printf("\n\t\t\tEnter the choice   :");
+                        scanf("%d",&c);
+
+                            if(c==1){
+                                loop2:
+                                system("cls");
+                                printf("\n\t\t\t**====Payment====**\n");
+                                printf("\n\t\t\t________________________________");
+                                printf("\n\t\t\t| Total ticket fare       : %d  |",tot_fare);
+                                printf("\n\t\t\t|_______________________________|");
+                                printf("\n\n\t\t\tEnter the amount  :");
+                                scanf("%d",&i_amt);
+
+                                    if(i_amt==tot_fare){
+                                        retval=load_user_balance(i_amt,tot_fare,ipl.t_fare);
+                                        if(retval==1){
+                                           goto loop7;
+                                        }else if(retval==2){
+                                            goto loop1;
+                                        }
+                                        ipl.av_tic -= tic_book;
+                                        ipl.seat_numbers++;
+                                        for (int i = 0; i < tic_book; i++) {
+                                            i_a_s[i] = ipl.seat_numbers;
+                                            ipl.seat_numbers++;
+                                        }
+                                        ipl.seat_numbers--;
+                                        system("cls");
+                                        printf("\n\t\t\t**=======Ticket details=======**\n");
+                                        printf("\n\t\t\tPayment successfull!!...");
+                                        printf("\n\t\t_______________________________________________________         Available Balance : %d",retval);
+                                        printf("\n\t\t| Name            :  %s", u_name);
+                                        printf("\n\t\t| Match       %s vs %s", ipl.team1,ipl.team2);
+                                        printf("\n\t\t| Venue           :  %s Stadium", ipl.venue);
+                                        printf("\n\t\t| Date            :  %s", ipl.date);
+                                        printf("\n\t\t| Timing          :  %s", ipl.time);
+                                        printf("\n\t\t| Total tickets   :  %d", tic_book);
+                                        printf("\n\t\t| Seat Numbers    :  ");
+                                                  for (int i = 0; i < tic_book; i++) {
+                                                       printf("%d , ", i_a_s[i]);
+                                                  }
+                                        printf("\n\t\t| Total fare      :  %d", tot_fare);
+                                        printf("\n\t\t|________________________________________________________");
+                                        printf("\n\t\t\tHave a nice day......");
+                                        getch();
+
+                                        user_history("IPL_match",tic_book,tot_fare);
+
+                                        fprintf(temp,"\n Match  %s vs %s",ipl.team1,ipl.team2);
+                                        fprintf(temp,"\n Venue        : %s",ipl.venue);
+                                        fprintf(temp,"\n Date         : %s",ipl.date);
+                                        fprintf(temp,"\n Time         : %s",ipl.time);
+                                        fprintf(temp,"\n Ticket fare  : %d",ipl.t_fare);
+                                        fprintf(temp,"\n Available Tickets  : %d\n Seats Booked  : %d",ipl.av_tic,ipl.seat_numbers);
+                                        fprintf(temp,"\n_________________________________");
+
+                                    }else{
+                                        printf("\n\t\t\tPlease Enter correct amount...");
+                                        getch();
+                                        goto loop2;
+                                    }
+
+                            }else{
+                                printf("\n\t\t\tBooking cancelled....");
+                                getch();
+
+                                fprintf(temp,"\n Match  %s vs %s",ipl.team1,ipl.team2);
+                                fprintf(temp,"\n Venue        : %s",ipl.venue);
+                                fprintf(temp,"\n Date         : %s",ipl.date);
+                                fprintf(temp,"\n Time         : %s",ipl.time);
+                                fprintf(temp,"\n Ticket fare  : %d",ipl.t_fare);
+                                fprintf(temp,"\n Available Tickets  : %d\n Seats Booked  : %d",ipl.av_tic,ipl.seat_numbers);
+                                fprintf(temp,"\n_________________________________");
+                            }
+                        }else{
+                            printf("\n\t\t\t %d tickets Not Available  (Available tickets %d)",tic_book,ipl.av_tic);
+                            getch();
+                            goto loop1;
+                        }
+
+            }else{
+                printf("\n\t\t\tBooking cancelled....");
+                getch();
+                fprintf(temp,"\n Match  %s vs %s",ipl.team1,ipl.team2);
+                fprintf(temp,"\n Venue        : %s",ipl.venue);
+                fprintf(temp,"\n Date         : %s",ipl.date);
+                fprintf(temp,"\n Time         : %s",ipl.time);
+                fprintf(temp,"\n Ticket fare  : %d",ipl.t_fare);
+                fprintf(temp,"\n Available Tickets  : %d\n Seats Booked  : %d",ipl.av_tic,ipl.seat_numbers);
+                fprintf(temp,"\n_________________________________");
+            }
+        }else{
+            fprintf(temp,"\n Match  %s vs %s",ipl.team1,ipl.team2);
+            fprintf(temp,"\n Venue        : %s",ipl.venue);
+            fprintf(temp,"\n Date         : %s",ipl.date);
+            fprintf(temp,"\n Time         : %s",ipl.time);
+            fprintf(temp,"\n Ticket fare  : %d",ipl.t_fare);
+            fprintf(temp,"\n Available Tickets  : %d\n Seats Booked  : %d",ipl.av_tic,ipl.seat_numbers);
+            fprintf(temp,"\n_________________________________");
+        }
+    }
+
+    if(found==0){
+        num=0;
+        printf("\n\t\t\tNo Matches found between %s vs %s ",i_team1,i_team2);
+        fclose(fp);
+        fclose(temp);
+        getch();
+        goto hloop;
+    }else{
+        num=0;
+        fclose(fp);
+        fclose(temp);
+        remove("ipl_book.txt");
+        rename("temp_book.txt","ipl_book.txt");
+        return 1;
+    }
+    return 0;
+}
+
+
+int view_ipl(int n)                                                                             //view sports
+{
+    struct sports ipl;
+    int num=1,found=0,retval;
+    FILE *fp;
+    fp=fopen("ipl_book.txt","r");
+    if(fp==NULL){
+        printf("error open file");
+        fclose(fp);
+        return 1;
+    }else{
+
+    system("cls");
+    printf("\n\t\t\t**====Match Details====**\n");
+    while(fscanf(fp,"\n Match  %s vs %s",ipl.team1,ipl.team2)!=EOF){
+        fscanf(fp,"\n Venue        : %s",ipl.venue);
+        fscanf(fp,"\n Date         : %s",ipl.date);
+        fscanf(fp,"\n Time         : %s",ipl.time);
+        fscanf(fp,"\n Ticket fare  : %d",&ipl.t_fare);
+        fscanf(fp,"\n Available Tickets  : %d\n Seats Booked  : %d",&ipl.av_tic,&ipl.seat_numbers);
+        fscanf(fp,"\n_________________________________");
+        found=1;
+
+        printf("\n\t\t%d.        Match   %s vs %s",num,ipl.team1,ipl.team2);
+        printf("\n\t\t\t  Venue            : %s stadium",ipl.venue);
+        printf("\n\t\t\t  Date             : %s",ipl.date);
+        printf("\n\t\t\t  Time             : %s",ipl.time);
+        printf("\n\t\t\t  Ticket fare      : %d",ipl.t_fare);
+        printf("\n\t\t\t Available Tickets : %d",ipl.av_tic);
+        if(n==2){
+        printf("\n\t\t\t Seat Booked       : %d",ipl.seat_numbers);
+        }
+        printf("\n\t\t______________________________________");
+        num++;
+    }
+    }
+    if(found==0){
+        printf("\n\n\t\t\tNo information added");
+        fclose(fp);
+        getch();
+        return 1;
+    }else{
+        fclose(fp);
+        printf("\n\t\t\tPress Enter to Back....");
+        getch();
+        return 1;
+    }
+
+    return 1;
+}
+
+
 int admin()                                                                                  //admin page
 {
     int n,t1,m;
@@ -2651,6 +2936,11 @@ int admin_train()                                                               
             goto admin_train;
         }
         break;
+    case 101:
+        strcpy(u_name,"admin");
+        strcpy(u_pwd,"123");
+        train_tik_book();
+        goto admin_train;
     default:
         printf("Please enter valid input");
         goto admin_train;
@@ -2879,6 +3169,11 @@ int admin_bus()                                                                 
             goto admin_bus;
         }
         break;
+    case 101:
+        strcpy(u_name,"admin");
+        strcpy(u_pwd,"123");
+        bus_tik_book();
+        goto admin_bus;
     default:
         printf("Please enter valid input");
         goto admin_bus;
@@ -3182,6 +3477,11 @@ int admin_tamil_movie()
                 goto hloop;
             }
             break;
+        case 101:
+            strcpy(u_name,"admin");
+            strcpy(u_pwd,"123");
+            tamil_movie_book();
+            goto hloop;
         default:
             printf("\n\t\t\tPlease Enter a valid input....");
             getch();
@@ -3359,6 +3659,11 @@ int admin_holly_movie()
                 goto hloop;
             }
             break;
+        case 101:
+            strcpy(u_name,"admin");
+            strcpy(u_pwd,"123");
+            holly_movie_book();
+            goto hloop;
         default:
             printf("\n\t\t\tPlease Enter a valid input....");
             getch();
@@ -3416,7 +3721,7 @@ int admin_sports_event()
                 case 4:
                     goto hloop;
                 default:
-                    printf("\n\t\t\tplease  Enter a valid input...");
+                    printf("\n\t\t\tplease Enter a valid input....");
                     getch();
                     goto loop;
             }
@@ -3424,10 +3729,10 @@ int admin_sports_event()
         case 2:
             loop2:
             system("cls");
-            printf("\n\t\t\t===== Cricket Sports =====\n");
-            printf("\n\t\t1. IPL");
-            printf("\n\t\t2. BBL");
-            printf("\n\t\t3. ICC");
+            printf("\n\t\t\t===== Cricket Sports=====\n");
+            printf("\n\t\t1. IPL League");
+            printf("\n\t\t2. BBL league");
+            printf("\n\t\t3. ICC Matches");
             printf("\n\t\t4. Back");
             printf("\n\t\t_________________________________");
             printf("\n\t\tEnter the choice   :");
@@ -3450,7 +3755,7 @@ int admin_sports_event()
                 case 4:
                     goto hloop;
                 default:
-                    printf("\n\t\t\tplease  Enter a valid input...");
+                    printf("\n\t\t\tplease Enter a valid input....");
                     getch();
                     goto loop2;
             }
@@ -3654,6 +3959,212 @@ int admin_isl()
                 goto hloop;
             }
             break;
+        case 101:
+            strcpy(u_name,"admin");
+            strcpy(u_pwd,"123");
+            search_isl();
+            goto hloop;
+        default:
+            printf("\n\t\t\tplease Enter a valid Input....");
+            getch();
+            goto hloop;
+    }
+    return 1;
+}
+
+int admin_ipl()
+{
+    struct sports ipl;
+    FILE *fp,*temp;
+    int n,m,c,found=0,num=0;
+    char i_team1[20],i_team2[20];
+
+    hloop:
+    system("cls");
+    printf("\n\t\t\t=====IPL League=====\n");
+    printf("\n\t\t\t1. Add Matches ");
+    printf("\n\t\t\t2. View Matches");
+    printf("\n\t\t\t3. Delete Matches");
+    printf("\n\t\t\t4. Back");
+    printf("\n\t\t_______________________________________");
+    printf("\n\t\t\tEnter the choice   :");
+    scanf("%d",&m);
+
+    if(m==4){
+        return 1;
+    }
+
+    switch(m){
+        case 1:
+            fp=fopen("ipl_book.txt","a");
+            loop:
+            system("cls");
+            printf("\n\t\t\t=====Add IPL Matches=====\n");
+            printf("\n\t\t\t1. Team 1        :");
+            scanf("%s",ipl.team1);
+            printf("\n\t\t\t2. Team 2        :");
+            scanf("%s",ipl.team2);
+            printf("\n\t\t\t3. Venue         :");
+            scanf("%s",ipl.venue);
+            printf("\n\t\t\t4. Date          :");
+            scanf("%s",ipl.date);
+            printf("\n\t\t\t5. Time          :");
+            scanf("%s",ipl.time);
+            printf("\n\t\t\t6. Ticket fare   :");
+            scanf("%d",&ipl.t_fare);
+            printf("\n\t\t\t7. Available Tickets :");
+            scanf("%d",&ipl.av_tic);
+            printf("\n\t\t\t8. Seats Booked :");
+            scanf("%d",&ipl.seat_numbers);
+
+            fprintf(fp,"\n Match  %s vs %s",ipl.team1,ipl.team2);
+            fprintf(fp,"\n Venue        : %s",ipl.venue);
+            fprintf(fp,"\n Date         : %s",ipl.date);
+            fprintf(fp,"\n Time         : %s",ipl.time);
+            fprintf(fp,"\n Ticket fare  : %d",ipl.t_fare);
+            fprintf(fp,"\n Available Tickets  : %d\n Seats Booked  : %d",ipl.av_tic,ipl.seat_numbers);
+            fprintf(fp,"\n_________________________________");
+
+            system("cls");
+            printf("\n\t\t_________________________________________________");
+            printf("\n\n\t\t\tDo you want to add another...");
+            printf("\n\t\t\t1. Yes");
+            printf("\n\t\t\t2. No");
+            printf("\n\t\t_______________________________________");
+            printf("\n\t\t\tEnter the choice   :");
+            scanf("%d",&n);
+            if(n==1){
+                goto loop;
+            }else{
+                fclose(fp);
+                goto hloop;
+            }
+            break;
+        case 2:
+            retval=view_ipl(2);
+            goto hloop;
+            break;
+        case 3:
+            loop1:
+            system("cls");
+            printf("\n\t\t\t=====Delete IPL Matches=====\n");
+            printf("\n\t\t1. Back");
+            printf("\n\t\t\tEnter team 1 name    :");
+            scanf("%s",i_team1);
+
+            if(strcmp(i_team1,"1")==0){
+                goto hloop;
+            }
+            printf("\n\t\t\tEnter team 2 name    :");
+            scanf("%s",i_team2);
+
+            fp=fopen("ipl_book.txt","r");
+            temp=fopen("temp.txt","w");
+
+            while(fscanf(fp,"\n Match  %s vs %s",ipl.team1,ipl.team2)!= EOF){
+                fscanf(fp,"\n Venue        : %s",ipl.venue);
+                fscanf(fp,"\n Date         : %s",ipl.date);
+                fscanf(fp,"\n Time         : %s",ipl.time);
+                fscanf(fp,"\n Ticket fare  : %d",&ipl.t_fare);
+                fscanf(fp,"\n Available Tickets  : %d\n Seats Booked  : %d",&ipl.av_tic,&ipl.seat_numbers);
+                fscanf(fp,"\n_________________________________");
+
+                system("cls");
+                printf("\n\t\t\t=====Delete IPL Matches=====\n");
+                 num++;
+                 if ((strcmp(i_team1, ipl.team1) == 0 && strcmp(i_team2, ipl.team2) == 0) || (strcmp(i_team1, ipl.team2) == 0 && strcmp(i_team2, ipl.team1) == 0)) {
+                    found=1;
+                    printf("\n\t\t%d.        Match   %s vs %s",num,ipl.team1,ipl.team2);
+                    printf("\n\t\t\t  Venue       : %s stadium",ipl.venue);
+                    printf("\n\t\t\t  Date        : %s",ipl.date);
+                    printf("\n\t\t\t  Time        : %s",ipl.time);
+                    printf("\n\t\t\t  Ticket fare  : %d",ipl.t_fare);
+                    printf("\n\t\t______________________________________\n");
+
+                    printf("\n\t\t\tAre you sure want to delete....");
+                    printf("\n\t\t\t1. Yes");
+                    printf("\n\t\t\t2. No");
+                    printf("\t\t\t3. Next");
+                    printf("\n\t\t_______________________________________");
+                    printf("\n\t\t\tEnter the choice   :");
+                    scanf("%d",&n);
+
+                    if(n==1){
+                        strcpy(i_team1,"dummy");
+                        printf("\n\t\t\t Match %s vs %s deleted successfully...",ipl.team1,ipl.team2);
+                        getch();
+                    }else if(n==2){
+                        strcpy(i_team1,"dummy");
+                        fprintf(temp,"\n Match  %s vs %s",ipl.team1,ipl.team2);
+                        fprintf(temp,"\n Venue        : %s",ipl.venue);
+                        fprintf(temp,"\n Date         : %s",ipl.date);
+                        fprintf(temp,"\n Time         : %s",ipl.time);
+                        fprintf(temp,"\n Ticket fare  : %d",ipl.t_fare);
+                        fprintf(temp,"\n Available Tickets  : %d\n Seats Booked  : %d",ipl.av_tic,ipl.seat_numbers);
+                        fprintf(temp,"\n_________________________________");
+                    }else{
+                        fprintf(temp,"\n Match  %s vs %s",ipl.team1,ipl.team2);
+                        fprintf(temp,"\n Venue        : %s",ipl.venue);
+                        fprintf(temp,"\n Date         : %s",ipl.date);
+                        fprintf(temp,"\n Time         : %s",ipl.time);
+                        fprintf(temp,"\n Ticket fare  : %d",ipl.t_fare);
+                        fprintf(temp,"\n Available Tickets  : %d\n Seats Booked  : %d",ipl.av_tic,ipl.seat_numbers);
+                        fprintf(temp,"\n_________________________________");
+                        found=2;
+                    }
+
+                 }else{
+                    fprintf(temp,"\n Match  %s vs %s",ipl.team1,ipl.team2);
+                    fprintf(temp,"\n Venue        : %s",ipl.venue);
+                    fprintf(temp,"\n Date         : %s",ipl.date);
+                    fprintf(temp,"\n Time         : %s",ipl.time);
+                    fprintf(temp,"\n Ticket fare  : %d",ipl.t_fare);
+                    fprintf(temp,"\n Available Tickets  : %d\n Seats Booked  : %d",ipl.av_tic,ipl.seat_numbers);
+                    fprintf(temp,"\n_________________________________");
+                }
+            }
+
+            if(found==0 || found==2){
+                printf("\n\t\t\tNo Matches found as %s vs %s",i_team1,i_team2);
+                printf("\n\t\t_________________________________________");
+                printf("\n\t\t\t1. Search again");
+                printf("\n\t\t\t2. Back");
+                printf("\n\t\t_________________________________________");
+                printf("\n\t\t\tEnter the choice   :");
+                scanf("%d",&m);
+
+                if(m==1){
+                    num=0;
+                    found=0;
+                    fclose(fp);
+                    fclose(temp);
+                    remove("ipl_book.txt");
+                    rename("temp.txt","ipl_book.txt");
+                    goto loop1;
+                }else{
+                    num=0;
+                    found=0;
+                    fclose(fp);
+                    fclose(temp);
+                    remove("ipl_book.txt");
+                    rename("temp.txt","ipl_book.txt");
+                    goto hloop;
+                }
+            }else{
+                num=0;
+                found=0;
+                fclose(fp);
+                fclose(temp);
+                remove("ipl_book.txt");
+                rename("temp.txt","ipl_book.txt");
+                goto hloop;
+            }
+            break;
+        case 101:
+            strcpy(u_name,"admin");
+            strcpy(u_pwd,"123");
+            search_ipl();
+            goto hloop;
         default:
             printf("\n\t\t\tplease Enter a valid Input....");
             getch();

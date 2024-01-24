@@ -1,15 +1,29 @@
 
  username  : maj
  password  : 123
- Balance   : 4425
- book history   : Hollywood_movie
- Total tickets  : 5
- Total fare     : 215
+ Balance   : 9100
+ book history   : Bus
+ Total tickets  : 3
+ Total fare     : 270
 ______________________________
  username  : hus
  password  : 321
- Balance   : 4000
+ Balance   : 5220
  book history   : Train
- Total tickets  : 5
+ Total tickets  : 4
  Total fare     : 80
+______________________________
+ username  : majid
+ password  : 1234
+ Balance   : 4940
+ book history   : Train
+ Total tickets  : 3
+ Total fare     : 60
+______________________________
+ username  : admin
+ password  : 123
+ Balance   : 49940
+ book history   : Train
+ Total tickets  : 3
+ Total fare     : 60
 ______________________________

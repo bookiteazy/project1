@@ -7,3 +7,11 @@
  Available Tickets  : 20
  Seats Booked  : 350
 _________________________________
+ Match  cfc vs kbfc
+ Venue        : nehru
+ Date         : 12/01/2024
+ Time         : 8pm
+ Ticket fare  : 300
+ Available Tickets  : 5000
+ Seats Booked  : 1
+_________________________________

@@ -1,0 +1,9 @@
+
+ Match  csk vs mi
+ Venue        : wankede
+ Date         : 12/21/24
+ Time         : 7pm
+ Ticket fare  : 800
+ Available Tickets  : 991
+ Seats Booked  : 10
+_________________________________
