@@ -1,10 +1,10 @@
 
  username  : maj
  password  : 123
- Balance   : 5000
- book history   : Bus
+ Balance   : 4425
+ book history   : Hollywood_movie
  Total tickets  : 5
- Total fare     : 450
+ Total fare     : 215
 ______________________________
  username  : hus
  password  : 321

@@ -1,17 +1,17 @@
 
- Movie name     : w
- Theater name   : w
- Date           : q
- Time           : we
- Ticket fare    : 32
- Available tickets : 44
- seat booked  :76
+ Movie name     : marvel
+ Theater name   : asdf
+ Date           : 21ew
+ Time           : 3w
+ Ticket fare    : 43
+ Available tickets : 51
+ seat booked  :8
 _____________________________________________________
- Movie name     : wq
- Theater name   : 3
- Date           : ed
- Time           : 3
- Ticket fare    : 30
- Available tickets : 43
- seat booked  :2
+ Movie name     : furious
+ Theater name   : asdfds
+ Date           : 2w2qe
+ Time           : 2we
+ Ticket fare    : 456
+ Available tickets : 36
+ seat booked  :43
 _____________________________________________________

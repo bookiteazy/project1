@@ -49,14 +49,14 @@ void setColor(int textColor, int bgColor) {
 
 int main()
 {                                                                                                         //Main function
-    int ch,u,n,m;
+    int ch,u,n,m,e;
 
     loop:
         system("cls");
         setColor(12,15);
         printf("\n\n\n\n\t\t\t\t**=========Bookiteazy========**\n");
         setColor(15, 0);
-        printf("\n\n\t\t\t\t\t1 .LOGIN");
+        printf("\n\n\t\t\t\t\t1 .LOGIN                    4. Exit");
         printf("\n\t\t\t\t\t2. Create account");
         printf("\n\t\t\t\t\t3. Admin login");
         printf("\n\t\t\t\t_____________________________");
@@ -88,6 +88,19 @@ int main()
                         goto loop;
                     }
                 }else if(retval==2){
+                    goto loop;
+                }
+            case 4:
+                system("cls");
+                printf("\n\n\n\t\t\tAre sure want to Exit App....");
+                printf("\n\n\t\t\t1. Yes");
+                printf("\n\n\t\t\t2. No");
+                printf("\n\t\t___________________________________________");
+                printf("\n\t\t\tEnter the choice   :");
+                scanf("%d",&e);
+                if(e==1){
+                    goto exitloop;
+                }else{
                     goto loop;
                 }
             default:
@@ -295,6 +308,11 @@ int main()
         }
 
 
+    exitloop:
+        system("cls");
+        setColor(2,0);
+        printf("\n\n\n\n\n\t\t\t\t Thank you come again!");
+        setColor(15,0);
     getch();
     return 0;
 }
@@ -1500,7 +1518,7 @@ int tamil_movie_book()
 
     hloop:
     system("cls");
-    printf("\n\t\t\t**=======Tamil Movies Booking=======**\n");
+    printf("\n\t\t**=======Tamil Movies Booking=======**\n");
     printf("\n\t\t\t1. Search movies");
     printf("\n\t\t\t2. View movies");
     printf("\n\t\t\t3. Back");
@@ -1542,7 +1560,7 @@ int tamil_movie_book()
             }
 
             system("cls");
-            printf("\n\t\t\t**=======Tamil Movies=======**\n");
+            printf("\n\t\t**=======Tamil Movies=======**\n");
             while(fscanf(fp,"\n Movie name     : %s\n Theater name   : %s",tamil.mov_name,tamil.mov_theater)!=EOF){
                 fscanf(fp,"\n Date           : %s\n Time           : %s",tamil.mov_date,tamil.mov_time);
                 fscanf(fp,"\n Ticket fare    : %d\n Available tickets : %d\n seat booked  :%d",&tamil.mov_t_fare,&tamil.mov_av_tic,&tamil.seat_numbers);
@@ -1752,7 +1770,7 @@ int view_tamil_movie(int n)
     fp=fopen("tamil_movie.txt","r");
 
     system("cls");
-    printf("\n\t\t\t**=======Tamil Movies=======**\n");
+    printf("\n\t\t**=======Tamil Movies=======**\n");
     while(fscanf(fp,"\n Movie name     : %s\n Theater name   : %s",tamil.mov_name,tamil.mov_theater)!=EOF){
         fscanf(fp,"\n Date           : %s\n Time           : %s",tamil.mov_date,tamil.mov_time);
         fscanf(fp,"\n Ticket fare    : %d\n Available tickets : %d\n seat booked  :%d",&tamil.mov_t_fare,&tamil.mov_av_tic,&tamil.seat_numbers);
@@ -1784,7 +1802,7 @@ int holly_movie_book()
 
     hloop:
     system("cls");
-    printf("\n\t\t\t**=======Hollywood Movies Booking=======**\n");
+    printf("\n\t\t**=======Hollywood Movies Booking=======**\n");
     printf("\n\t\t\t1. Search movies");
     printf("\n\t\t\t2. View movies");
     printf("\n\t\t\t3. Back");
@@ -1837,7 +1855,7 @@ int holly_movie_book()
                     found=1;
                     loop7:
                     system("cls");
-                    printf("\n\t\t\t**=======Hollywood Movies=======**\n");
+                    printf("\n\t\t**=======Hollywood Movies=======**\n");
                     printf("\n\t\t%d.      Movie name         : %s",num,holly.mov_name);
                     printf("\n\t\t\tTheater name       : %s",holly.mov_theater);
                     printf("\n\t\t\tDate               : %s",holly.mov_date);
@@ -2035,7 +2053,7 @@ int view_holly_movie(int n)
     fp=fopen("holly_movie.txt","r");
 
     system("cls");
-    printf("\n\t\t\t**=======Hollywood Movies=======**\n");
+    printf("\n\t\t**=======Hollywood Movies=======**\n");
     while(fscanf(fp,"\n Movie name     : %s\n Theater name   : %s",holly.mov_name,holly.mov_theater)!=EOF){
         fscanf(fp,"\n Date           : %s\n Time           : %s",holly.mov_date,holly.mov_time);
         fscanf(fp,"\n Ticket fare    : %d\n Available tickets : %d\n seat booked  :%d",&holly.mov_t_fare,&holly.mov_av_tic,&holly.seat_numbers);
@@ -3383,24 +3401,58 @@ int admin_sports_event()
             switch(m){
                 case 1:
                     retval=admin_isl();
-                    if(retval==1){
-                        goto loop;
-                    }
+                    goto loop;
                     break;
                 case 2:
-                    if(retval==1){
-                        goto hloop;
-                    }
+                    printf("\n\t\t\tNo information....");
+                    getch();
+                    goto loop;
                     break;
                 case 3:
-                    if(retval==1){
-                        goto hloop;
-                    }
+                    printf("\n\t\t\tNo information....");
+                    getch();
+                    goto loop;
                     break;
                 case 4:
                     goto hloop;
                 default:
-                    printf("");
+                    printf("\n\t\t\tplease  Enter a valid input...");
+                    getch();
+                    goto loop;
+            }
+            break;
+        case 2:
+            loop2:
+            system("cls");
+            printf("\n\t\t\t===== Cricket Sports =====\n");
+            printf("\n\t\t1. IPL");
+            printf("\n\t\t2. BBL");
+            printf("\n\t\t3. ICC");
+            printf("\n\t\t4. Back");
+            printf("\n\t\t_________________________________");
+            printf("\n\t\tEnter the choice   :");
+            scanf("%d",&m);
+            switch(m){
+                case 1:
+                    retval=admin_ipl();
+                    goto loop2;
+                    break;
+                case 2:
+                    printf("\n\t\t\tNo information....");
+                    getch();
+                    goto loop2;
+                    break;
+                case 3:
+                    printf("\n\t\t\tNo information....");
+                    getch();
+                    goto loop2;
+                    break;
+                case 4:
+                    goto hloop;
+                default:
+                    printf("\n\t\t\tplease  Enter a valid input...");
+                    getch();
+                    goto loop2;
             }
             break;
         default:
