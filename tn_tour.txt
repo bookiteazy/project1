@@ -1,0 +1,8 @@
+
+ Place          : aaa
+ Hotel          : a
+ Package type   : a
+ Package price  : 444
+ Available rooms: 30
+ Rooms booked   : 36
+_______________________________

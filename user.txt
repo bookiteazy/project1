@@ -1,10 +1,10 @@
 
  username  : maj
  password  : 123
- Balance   : 9100
- book history   : Bus
+ Balance   : 11008
+ book history   : TN_Touristry
  Total tickets  : 3
- Total fare     : 270
+ Total fare     : 3996
 ______________________________
  username  : hus
  password  : 321
@@ -22,8 +22,22 @@ ______________________________
 ______________________________
  username  : admin
  password  : 123
- Balance   : 49940
- book history   : Train
+ Balance   : 21524
+ book history   : TN_Touristry
  Total tickets  : 3
- Total fare     : 60
+ Total fare     : 2664
+______________________________
+ username  : samgift@14
+ password  : mas5002
+ Balance   : 1000
+ book history   : NILL
+ Total tickets  : 0
+ Total fare     : 0
+______________________________
+ username  : praneshhh
+ password  : 123456
+ Balance   : 1500
+ book history   : Train
+ Total tickets  : 5
+ Total fare     : 100
 ______________________________

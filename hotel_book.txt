@@ -1,0 +1,33 @@
+
+ Hotel name      : aaa
+ Place name      : aa
+ Ratings         : *****
+ Hotel class     : high
+ Room Price      : 2000
+ Available rooms : 200
+ Booked rooms    : 1
+_______________________________________________________________________________________
+ Hotel name      : bbb
+ Place name      : bb
+ Ratings         : ***
+ Hotel class     : average
+ Room Price      : 1000
+ Available rooms : 100
+ Booked rooms    : 30
+_______________________________________________________________________________________
+ Hotel name      : ccc
+ Place name      : cc
+ Ratings         : **
+ Hotel class     : good
+ Room Price      : 500
+ Available rooms : 50
+ Booked rooms    : 10
+_______________________________________________________________________________________
+ Hotel name      : ddd
+ Place name      : dd
+ Ratings         : ****
+ Hotel class     : good
+ Room Price      : 1500
+ Available rooms : 200
+ Booked rooms    : 100
+_______________________________________________________________________________________

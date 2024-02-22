@@ -4,16 +4,16 @@
  Date           : w
  Time           : w
  Ticket fare    : 50
- Available tickets : 153
- seat booked  :38
+ Available tickets : 145
+ seat booked  :46
 _____________________________________________________
  Movie name     : beast
  Theater name   : w
  Date           : w
  Time           : w
  Ticket fare    : 200
- Available tickets : 50
- seat booked  :60
+ Available tickets : 40
+ seat booked  :70
 _____________________________________________________
  Movie name     : a
  Theater name   : wee

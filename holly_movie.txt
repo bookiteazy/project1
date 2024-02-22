@@ -1,33 +1,25 @@
 
  Movie name     : w
  Theater name   : w
- Date           : q
- Time           : we
- Ticket fare    : 32
- Available tickets : 44
- seat booked  :76
-_____________________________________________________
- Movie name     : wq
- Theater name   : 3
- Date           : ed
- Time           : 3
- Ticket fare    : 30
- Available tickets : 43
- seat booked  :2
+ Date           : ww
+ Time           : wwww
+ Ticket fare    : 500
+ Available tickets : 56
+ seat booked  :34
 _____________________________________________________
  Movie name     : q
- Theater name   : we
- Date           : 23/97
- Time           : 75yh
- Ticket fare    : 76
- Available tickets : 48
- seat booked  :1
+ Theater name   : q
+ Date           : qqq
+ Time           : qqq
+ Ticket fare    : 342
+ Available tickets : 32
+ seat booked  :64
 _____________________________________________________
- Movie name     : marvel
- Theater name   : 
- Date           : 12/01/2024
- Time           : 9am
- Ticket fare    : 200
- Available tickets : 100
- seat booked  :1
+ Movie name     : r
+ Theater name   : r
+ Date           : r
+ Time           : r
+ Ticket fare    : 45
+ Available tickets : 4
+ seat booked  :2
 _____________________________________________________
